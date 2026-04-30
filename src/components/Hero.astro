@@ -1,0 +1,65 @@
+---
+import { Badge } from './ui/badge';
+---
+
+<section class="relative min-h-[92vh] flex flex-col items-center justify-center pt-14 px-6 overflow-hidden">
+
+  <!-- Background grain texture -->
+  <div class="absolute inset-0 opacity-[0.03]" style="background-image: url('data:image/svg+xml,%3Csvg viewBox=%220 0 256 256%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noise%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.9%22 numOctaves=%224%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noise)%22/%3E%3C/svg%3E'); background-size: 200px;"></div>
+
+  <!-- Subtle radial glow -->
+  <div class="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full opacity-[0.06]"
+    style="background: radial-gradient(circle, #c8a245 0%, transparent 70%);"></div>
+
+  <div class="relative z-10 text-center max-w-3xl mx-auto">
+
+    <!-- Eyebrow -->
+    <div class="flex items-center justify-center gap-3 mb-8 animate-fade-in" style="animation-delay: 0.1s; opacity: 0;">
+      <div class="h-px w-12 bg-gold/40"></div>
+      <span class="text-[10px] text-gold font-sans tracking-[5px] uppercase">Altersvorsorge-Analyst</span>
+      <div class="h-px w-12 bg-gold/40"></div>
+    </div>
+
+    <!-- Headline -->
+    <h1 class="font-display text-5xl sm:text-6xl md:text-7xl text-foreground leading-[1.1] tracking-tight mb-6 animate-fade-in" style="animation-delay: 0.2s; opacity: 0;">
+      Know your<br/>
+      <em class="text-gold not-italic">future self.</em>
+    </h1>
+
+    <!-- Subline -->
+    <p class="text-base sm:text-lg text-muted-foreground font-sans leading-relaxed max-w-xl mx-auto mb-10 animate-fade-in" style="animation-delay: 0.35s; opacity: 0;">
+      Riester, Rürup, Pension, ETF — ehrlich analysiert. Für alle Berufsgruppen.
+      Keine Anmeldung, keine Datenspeicherung, keine versteckten Verkaufsabsichten.
+    </p>
+
+    <!-- CTA -->
+    <div class="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12 animate-fade-in" style="animation-delay: 0.5s; opacity: 0;">
+      <a href="#app"
+        class="inline-flex items-center gap-2 border border-gold bg-gold/12 text-gold hover:bg-gold/22 px-8 py-3 text-sm font-sans tracking-widest uppercase transition-all">
+        Analyse starten
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M2 7h10M8 3l4 4-4 4"/>
+        </svg>
+      </a>
+      <a href="#features" class="text-xs text-muted-foreground hover:text-foreground font-sans tracking-wider uppercase transition-colors">
+        Wie es funktioniert ↓
+      </a>
+    </div>
+
+    <!-- Trust badges -->
+    <div class="flex flex-wrap items-center justify-center gap-3 animate-fade-in" style="animation-delay: 0.65s; opacity: 0;">
+      {['Keine Datenspeicherung', 'Alle Berechnungen lokal', 'Keine Registrierung', 'Kostenlos'].map(label => (
+        <span class="inline-flex items-center gap-1.5 text-[10px] text-muted-foreground font-sans tracking-wider">
+          <span class="text-gold text-xs">✓</span>
+          {label}
+        </span>
+      ))}
+    </div>
+  </div>
+
+  <!-- Scroll indicator -->
+  <div class="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1 animate-fade-in-slow opacity-0" style="animation-delay: 1.2s;">
+    <span class="text-[9px] text-muted-foreground/40 font-sans tracking-widest uppercase">Scroll</span>
+    <div class="w-px h-8 bg-gradient-to-b from-border to-transparent"></div>
+  </div>
+</section>

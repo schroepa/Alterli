@@ -1,0 +1,70 @@
+---
+const features = [
+  {
+    icon: '⚖️',
+    title: 'Alle Berufsgruppen',
+    desc: 'Angestellt, selbstständig, Beamte, TVöD, Minijob, Versorgungswerk — jede Gruppe bekommt die richtige Analyse.',
+    badge: 'Vollständig',
+  },
+  {
+    icon: '🔍',
+    title: 'Ehrlicher Moment',
+    desc: 'Kein Score, kein Dashboard — zuerst ein einziger, direkt auf dich zugeschnittener Satz. Das sagt kein Versicherungsvertreter.',
+    badge: 'Einzigartig',
+  },
+  {
+    icon: '📊',
+    title: 'Drei-Wege-Vergleich',
+    desc: 'Riester vs. Altersvorsorgedepot 2027 vs. ETF-Eigendepot. Mit echten Renditeunterschieden, nicht Hochglanz-Prognosen.',
+    badge: 'Transparent',
+  },
+  {
+    icon: '🔮',
+    title: 'Was-wäre-wenn',
+    desc: 'Kind in 3 Jahren? Heirat? Frühpension? Der Szenarien-Simulator zeigt sofort wie sich dein Leben auf deine Rente auswirkt.',
+    badge: 'Interaktiv',
+  },
+  {
+    icon: '🧾',
+    title: 'Reform 2027 eingebaut',
+    desc: 'Das Altersvorsorgedepot ist bereits als Option integriert. Inklusive Vergleich mit deinem Bestandsvertrag.',
+    badge: 'Aktuell',
+  },
+  {
+    icon: '🔒',
+    title: 'Zero Data',
+    desc: 'Alle Berechnungen laufen lokal im Browser. Keine Anmeldung, kein Tracking, keine Datenbank. Deine Zahlen bleiben deine.',
+    badge: 'Privat',
+  },
+];
+---
+
+<section id="features" class="py-24 px-6 border-t border-border">
+  <div class="container max-w-6xl mx-auto">
+
+    <!-- Section header -->
+    <div class="text-center mb-16">
+      <p class="text-[10px] text-muted-foreground font-sans tracking-[5px] uppercase mb-4">Was alterli leistet</p>
+      <h2 class="font-display text-3xl sm:text-4xl text-foreground">
+        Mehr als ein Rechner.<br/>
+        <em class="text-gold">Eine Perspektive.</em>
+      </h2>
+    </div>
+
+    <!-- Feature grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-px bg-border">
+      {features.map((f, i) => (
+        <div class="bg-card p-6 group hover:bg-accent/30 transition-colors">
+          <div class="flex items-start justify-between mb-4">
+            <span class="text-2xl">{f.icon}</span>
+            <span class="text-[9px] font-sans tracking-widest uppercase text-gold border border-gold/30 bg-gold/8 px-2 py-0.5">
+              {f.badge}
+            </span>
+          </div>
+          <h3 class="font-serif text-base text-foreground mb-2">{f.title}</h3>
+          <p class="text-sm text-muted-foreground font-sans leading-relaxed">{f.desc}</p>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>

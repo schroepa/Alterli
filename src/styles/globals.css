@@ -1,0 +1,50 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background:  220 10% 4%;
+    --foreground:  40 15% 88%;
+    --card:        220 10% 7%;
+    --card-foreground: 40 15% 88%;
+    --popover:     220 10% 7%;
+    --popover-foreground: 40 15% 88%;
+    --primary:     38 55% 52%;
+    --primary-foreground: 220 10% 6%;
+    --secondary:   220 8% 12%;
+    --secondary-foreground: 40 10% 70%;
+    --muted:       220 8% 14%;
+    --muted-foreground: 220 6% 48%;
+    --accent:      220 8% 16%;
+    --accent-foreground: 40 15% 88%;
+    --destructive: 0 55% 48%;
+    --destructive-foreground: 40 15% 95%;
+    --border:      220 8% 14%;
+    --input:       220 8% 14%;
+    --ring:        38 55% 52%;
+    --radius:      0.25rem;
+  }
+}
+
+@layer base {
+  * { @apply border-border; }
+  body {
+    @apply bg-background text-foreground font-sans;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+  h1, h2, h3, h4 { @apply font-serif; }
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 4px; height: 4px; }
+::-webkit-scrollbar-track { background: hsl(var(--background)); }
+::-webkit-scrollbar-thumb { background: hsl(var(--border)); border-radius: 2px; }
+::-webkit-scrollbar-thumb:hover { background: hsl(var(--muted-foreground)); }
+
+/* Range input */
+input[type=range] { accent-color: #c8a245; cursor: pointer; }
+
+/* Number input */
+input[type=number]::-webkit-outer-spin-button,
+input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }

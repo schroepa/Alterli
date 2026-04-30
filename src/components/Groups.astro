@@ -1,0 +1,45 @@
+---
+const groups = [
+  { icon: '💼', label: 'Angestellt',        sub: 'Vollzeit · Teilzeit · Minijob',         color: '#c8a245' },
+  { icon: '🏛',  label: 'Öffentl. Dienst',  sub: 'Beamte · TVöD · TV-L',                  color: '#4a82c4' },
+  { icon: '⚙️',  label: 'Selbstständig',    sub: 'Gewerbe · Freischaffend',               color: '#47a875' },
+  { icon: '⚖️',  label: 'Freier Beruf',     sub: 'Versorgungswerk · Sonstige Freiberufler', color: '#8060c0' },
+];
+---
+
+<section class="py-20 px-6 border-t border-border bg-card/30">
+  <div class="container max-w-6xl mx-auto">
+    <div class="grid md:grid-cols-2 gap-12 items-center">
+
+      <div>
+        <p class="text-[10px] text-muted-foreground font-sans tracking-[5px] uppercase mb-4">Für wen</p>
+        <h2 class="font-display text-3xl sm:text-4xl text-foreground mb-4">
+          Jede Berufsgruppe.<br/>
+          <em class="text-gold">Eigene Logik.</em>
+        </h2>
+        <p class="text-sm text-muted-foreground font-sans leading-relaxed mb-6">
+          Ob Riester, Rürup, Pension oder Versorgungswerk — alterli erkennt deine Situation und
+          berechnet nur das was für dich relevant ist. Versorgungswerke sind zu komplex für Zahlenspielerei:
+          dort bekommst du ehrliche Weiterleitung statt falscher Prognosen.
+        </p>
+        <a href="#app" class="inline-flex items-center gap-2 border border-gold/60 bg-gold/10 text-gold hover:bg-gold/20 px-5 py-2.5 text-xs font-sans tracking-widest uppercase transition-all">
+          Eigene Analyse starten →
+        </a>
+      </div>
+
+      <div class="grid grid-cols-2 gap-px bg-border">
+        {groups.map(g => (
+          <div class="bg-card p-5 flex flex-col gap-2">
+            <span class="text-xl">{g.icon}</span>
+            <span class="font-serif text-sm text-foreground">{g.label}</span>
+            <span class="text-[10px] text-muted-foreground font-sans leading-relaxed">{g.sub}</span>
+            <div class="mt-auto pt-2">
+              <div class="h-px w-8" style={`background: ${g.color}; opacity: 0.6;`}></div>
+            </div>
+          </div>
+        ))}
+      </div>
+
+    </div>
+  </div>
+</section>
