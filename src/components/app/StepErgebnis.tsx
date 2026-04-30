@@ -1,4 +1,4 @@
-import { RotateCcw, TrendingUp, AlertTriangle, CheckCircle2, Info } from 'lucide-react';
+import { RotateCcw, AlertTriangle, CheckCircle2, Info } from 'lucide-react';
 import {
   AreaChart, Area, XAxis, YAxis, Tooltip as RechartTooltip, ResponsiveContainer,
   BarChart, Bar, Cell, RadarChart, Radar, PolarGrid, PolarAngleAxis,
