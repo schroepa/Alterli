@@ -5,27 +5,39 @@
     <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
 
       <div>
-        <span class="font-display text-lg text-gold tracking-widest">alterli</span>
-        <p class="text-[10px] text-muted-foreground font-sans tracking-wider mt-1">
-          Ein Produkt von <a href="https://digipub.de" class="hover:text-foreground transition-colors">DigiPub</a>
+        <a href="/" class="text-lg font-semibold tracking-tight text-foreground hover:text-primary transition-colors">
+          alter<span class="text-primary">li</span>
+        </a>
+        <p class="text-[11px] text-muted-foreground mt-1">
+          Ein Produkt von{' '}
+          <a href="https://digipub.de" class="hover:text-foreground transition-colors underline underline-offset-2">
+            DigiPub
+          </a>
         </p>
       </div>
 
-      <div class="text-[10px] text-muted-foreground font-sans leading-relaxed max-w-sm">
+      <div class="text-[11px] text-muted-foreground leading-relaxed max-w-sm">
         Alle Berechnungen sind vereinfachte Schätzungen ohne Gewähr. Kein Ersatz für individuelle
         Finanz- oder Steuerberatung. Stand: April 2026.
       </div>
 
-      <div class="flex flex-col gap-1.5 text-[10px] text-muted-foreground font-sans">
-        <span class="flex items-center gap-1.5"><span class="text-gold">✓</span> Keine Datenspeicherung</span>
-        <span class="flex items-center gap-1.5"><span class="text-gold">✓</span> Alle Berechnungen lokal</span>
-        <span class="flex items-center gap-1.5"><span class="text-gold">✓</span> Open Source geplant</span>
-      </div>
+      <ul role="list" class="flex flex-col gap-1.5 text-[11px] text-muted-foreground">
+        {['Keine Datenspeicherung', 'Alle Berechnungen lokal', 'Open Source geplant'].map(item => (
+          <li class="flex items-center gap-1.5">
+            <svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24"
+              fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"
+              class="text-primary flex-shrink-0" aria-hidden="true">
+              <polyline points="20 6 9 17 4 12"/>
+            </svg>
+            {item}
+          </li>
+        ))}
+      </ul>
     </div>
 
-    <div class="mt-8 pt-6 border-t border-border flex items-center justify-between">
-      <span class="text-[9px] text-muted-foreground/40 font-sans tracking-wider">© 2026 DigiPub · alterli v1 Alpha</span>
-      <span class="text-[9px] text-muted-foreground/40 font-sans tracking-wider">Keine Anlageberatung im Sinne des WpHG</span>
+    <div class="mt-8 pt-6 border-t border-border flex items-center justify-between flex-wrap gap-3">
+      <span class="text-[10px] text-muted-foreground/50">© 2026 DigiPub · alterli v1 Alpha</span>
+      <span class="text-[10px] text-muted-foreground/50">Keine Anlageberatung im Sinne des WpHG</span>
     </div>
   </div>
 </footer>
