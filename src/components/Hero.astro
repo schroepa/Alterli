@@ -1,65 +1,72 @@
 ---
-import { Badge } from './ui/badge';
 ---
+<section
+  aria-labelledby="hero-heading"
+  class="relative min-h-[88vh] flex flex-col items-center justify-center pt-14 px-6 overflow-hidden">
 
-<section class="relative min-h-[92vh] flex flex-col items-center justify-center pt-14 px-6 overflow-hidden">
-
-  <!-- Background grain texture -->
-  <div class="absolute inset-0 opacity-[0.03]" style="background-image: url('data:image/svg+xml,%3Csvg viewBox=%220 0 256 256%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noise%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.9%22 numOctaves=%224%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noise)%22/%3E%3C/svg%3E'); background-size: 200px;"></div>
-
-  <!-- Subtle radial glow -->
-  <div class="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full opacity-[0.06]"
-    style="background: radial-gradient(circle, #c8a245 0%, transparent 70%);"></div>
+  <!-- Radial glow (decorative, hidden for reduced-motion via CSS) -->
+  <div
+    aria-hidden="true"
+    class="pointer-events-none absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full opacity-[0.07]"
+    style="background: radial-gradient(circle, var(--primary) 0%, transparent 70%);">
+  </div>
 
   <div class="relative z-10 text-center max-w-3xl mx-auto">
 
     <!-- Eyebrow -->
-    <div class="flex items-center justify-center gap-3 mb-8 animate-fade-in" style="animation-delay: 0.1s; opacity: 0;">
-      <div class="h-px w-12 bg-gold/40"></div>
-      <span class="text-[10px] text-gold font-sans tracking-[5px] uppercase">Altersvorsorge-Analyst</span>
-      <div class="h-px w-12 bg-gold/40"></div>
+    <div class="inline-flex items-center gap-2 mb-8 bg-primary/10 border border-primary/20 text-primary text-[11px] font-medium tracking-widest uppercase px-4 py-1.5 rounded-full">
+      <span aria-hidden="true" class="w-1.5 h-1.5 rounded-full bg-primary flex-shrink-0"></span>
+      Altersvorsorge-Analyst
     </div>
 
     <!-- Headline -->
-    <h1 class="font-display text-5xl sm:text-6xl md:text-7xl text-foreground leading-[1.1] tracking-tight mb-6 animate-fade-in" style="animation-delay: 0.2s; opacity: 0;">
+    <h1 id="hero-heading" class="text-5xl sm:text-6xl md:text-7xl font-semibold tracking-tight leading-[1.1] mb-6 text-foreground">
       Know your<br/>
-      <em class="text-gold not-italic">future self.</em>
+      <em class="text-primary not-italic">future self.</em>
     </h1>
 
     <!-- Subline -->
-    <p class="text-base sm:text-lg text-muted-foreground font-sans leading-relaxed max-w-xl mx-auto mb-10 animate-fade-in" style="animation-delay: 0.35s; opacity: 0;">
+    <p class="text-base sm:text-lg text-muted-foreground leading-relaxed max-w-xl mx-auto mb-10">
       Riester, Rürup, Pension, ETF — ehrlich analysiert. Für alle Berufsgruppen.
       Keine Anmeldung, keine Datenspeicherung, keine versteckten Verkaufsabsichten.
     </p>
 
-    <!-- CTA -->
-    <div class="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12 animate-fade-in" style="animation-delay: 0.5s; opacity: 0;">
+    <!-- CTA buttons -->
+    <div class="flex flex-col sm:flex-row items-center justify-center gap-3 mb-10">
       <a href="#app"
-        class="inline-flex items-center gap-2 border border-gold bg-gold/12 text-gold hover:bg-gold/22 px-8 py-3 text-sm font-sans tracking-widest uppercase transition-all">
+        class="inline-flex items-center gap-2 bg-primary text-primary-foreground hover:bg-primary/90 font-medium text-sm px-6 py-3 rounded-md transition-colors">
         Analyse starten
-        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5">
-          <path d="M2 7h10M8 3l4 4-4 4"/>
+        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"
+          fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+          aria-hidden="true">
+          <line x1="5" y1="12" x2="19" y2="12"/>
+          <polyline points="12 5 19 12 12 19"/>
         </svg>
       </a>
-      <a href="#features" class="text-xs text-muted-foreground hover:text-foreground font-sans tracking-wider uppercase transition-colors">
-        Wie es funktioniert ↓
+      <a href="#features"
+        class="inline-flex items-center gap-2 border border-border text-muted-foreground hover:text-foreground hover:border-foreground/30 text-sm px-6 py-3 rounded-md transition-colors">
+        Wie es funktioniert
+        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"
+          fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+          aria-hidden="true">
+          <line x1="12" y1="5" x2="12" y2="19"/>
+          <polyline points="19 12 12 19 5 12"/>
+        </svg>
       </a>
     </div>
 
     <!-- Trust badges -->
-    <div class="flex flex-wrap items-center justify-center gap-3 animate-fade-in" style="animation-delay: 0.65s; opacity: 0;">
+    <ul role="list" class="flex flex-wrap items-center justify-center gap-x-6 gap-y-2">
       {['Keine Datenspeicherung', 'Alle Berechnungen lokal', 'Keine Registrierung', 'Kostenlos'].map(label => (
-        <span class="inline-flex items-center gap-1.5 text-[10px] text-muted-foreground font-sans tracking-wider">
-          <span class="text-gold text-xs">✓</span>
+        <li class="flex items-center gap-1.5 text-[11px] text-muted-foreground">
+          <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24"
+            fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"
+            class="text-primary flex-shrink-0" aria-hidden="true">
+            <polyline points="20 6 9 17 4 12"/>
+          </svg>
           {label}
-        </span>
+        </li>
       ))}
-    </div>
-  </div>
-
-  <!-- Scroll indicator -->
-  <div class="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1 animate-fade-in-slow opacity-0" style="animation-delay: 1.2s;">
-    <span class="text-[9px] text-muted-foreground/40 font-sans tracking-widest uppercase">Scroll</span>
-    <div class="w-px h-8 bg-gradient-to-b from-border to-transparent"></div>
+    </ul>
   </div>
 </section>

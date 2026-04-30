@@ -1,37 +1,37 @@
 ---
 const features = [
   {
-    icon: '⚖️',
+    icon: `<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>`,
     title: 'Alle Berufsgruppen',
     desc: 'Angestellt, selbstständig, Beamte, TVöD, Minijob, Versorgungswerk — jede Gruppe bekommt die richtige Analyse.',
     badge: 'Vollständig',
   },
   {
-    icon: '🔍',
+    icon: `<circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>`,
     title: 'Ehrlicher Moment',
     desc: 'Kein Score, kein Dashboard — zuerst ein einziger, direkt auf dich zugeschnittener Satz. Das sagt kein Versicherungsvertreter.',
     badge: 'Einzigartig',
   },
   {
-    icon: '📊',
+    icon: `<line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/>`,
     title: 'Drei-Wege-Vergleich',
-    desc: 'Riester vs. Altersvorsorgedepot 2027 vs. ETF-Eigendepot. Mit echten Renditeunterschieden, nicht Hochglanz-Prognosen.',
+    desc: 'Riester vs. Altersvorsorgedepot 2027 vs. ETF-Eigendepot. Mit echten Renditeunterschieden.',
     badge: 'Transparent',
   },
   {
-    icon: '🔮',
+    icon: `<path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>`,
     title: 'Was-wäre-wenn',
     desc: 'Kind in 3 Jahren? Heirat? Frühpension? Der Szenarien-Simulator zeigt sofort wie sich dein Leben auf deine Rente auswirkt.',
     badge: 'Interaktiv',
   },
   {
-    icon: '🧾',
+    icon: `<rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>`,
     title: 'Reform 2027 eingebaut',
     desc: 'Das Altersvorsorgedepot ist bereits als Option integriert. Inklusive Vergleich mit deinem Bestandsvertrag.',
     badge: 'Aktuell',
   },
   {
-    icon: '🔒',
+    icon: `<rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>`,
     title: 'Zero Data',
     desc: 'Alle Berechnungen laufen lokal im Browser. Keine Anmeldung, kein Tracking, keine Datenbank. Deine Zahlen bleiben deine.',
     badge: 'Privat',
@@ -39,32 +39,34 @@ const features = [
 ];
 ---
 
-<section id="features" class="py-24 px-6 border-t border-border">
+<section id="features" aria-labelledby="features-heading" class="py-24 px-6 border-t border-border">
   <div class="container max-w-6xl mx-auto">
 
-    <!-- Section header -->
     <div class="text-center mb-16">
-      <p class="text-[10px] text-muted-foreground font-sans tracking-[5px] uppercase mb-4">Was alterli leistet</p>
-      <h2 class="font-display text-3xl sm:text-4xl text-foreground">
+      <p class="text-[11px] text-muted-foreground tracking-[5px] uppercase mb-4">Was alterli leistet</p>
+      <h2 id="features-heading" class="text-3xl sm:text-4xl font-semibold tracking-tight text-foreground">
         Mehr als ein Rechner.<br/>
-        <em class="text-gold">Eine Perspektive.</em>
+        <em class="text-primary not-italic">Eine Perspektive.</em>
       </h2>
     </div>
 
-    <!-- Feature grid -->
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-px bg-border">
-      {features.map((f, i) => (
-        <div class="bg-card p-6 group hover:bg-accent/30 transition-colors">
+    <ul role="list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-px bg-border rounded-lg overflow-hidden">
+      {features.map((f) => (
+        <li role="listitem" class="bg-card p-6 group hover:bg-accent/30 transition-colors">
           <div class="flex items-start justify-between mb-4">
-            <span class="text-2xl">{f.icon}</span>
-            <span class="text-[9px] font-sans tracking-widest uppercase text-gold border border-gold/30 bg-gold/8 px-2 py-0.5">
+            <div class="w-8 h-8 rounded-md bg-primary/10 border border-primary/20 flex items-center justify-center text-primary flex-shrink-0" aria-hidden="true">
+              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"
+                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                set:html={f.icon} />
+            </div>
+            <span class="text-[9px] font-medium tracking-widest uppercase text-primary border border-primary/20 bg-primary/8 px-2 py-0.5 rounded-sm">
               {f.badge}
             </span>
           </div>
-          <h3 class="font-serif text-base text-foreground mb-2">{f.title}</h3>
-          <p class="text-sm text-muted-foreground font-sans leading-relaxed">{f.desc}</p>
-        </div>
+          <h3 class="text-sm font-medium text-foreground mb-2">{f.title}</h3>
+          <p class="text-sm text-muted-foreground leading-relaxed">{f.desc}</p>
+        </li>
       ))}
-    </div>
+    </ul>
   </div>
 </section>
