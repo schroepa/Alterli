@@ -16,32 +16,29 @@ export default {
         background:  'hsl(var(--background))',
         foreground:  'hsl(var(--foreground))',
         primary: {
-          DEFAULT:     'hsl(var(--primary))',
-          foreground:  'hsl(var(--primary-foreground))',
+          DEFAULT:    'hsl(var(--primary))',
+          foreground: 'hsl(var(--primary-foreground))',
         },
         secondary: {
-          DEFAULT:     'hsl(var(--secondary))',
-          foreground:  'hsl(var(--secondary-foreground))',
+          DEFAULT:    'hsl(var(--secondary))',
+          foreground: 'hsl(var(--secondary-foreground))',
         },
         destructive: {
-          DEFAULT:     'hsl(var(--destructive))',
-          foreground:  'hsl(var(--destructive-foreground))',
+          DEFAULT:    'hsl(var(--destructive))',
+          foreground: 'hsl(var(--destructive-foreground))',
         },
         muted: {
-          DEFAULT:     'hsl(var(--muted))',
-          foreground:  'hsl(var(--muted-foreground))',
+          DEFAULT:    'hsl(var(--muted))',
+          foreground: 'hsl(var(--muted-foreground))',
         },
         accent: {
-          DEFAULT:     'hsl(var(--accent))',
-          foreground:  'hsl(var(--accent-foreground))',
+          DEFAULT:    'hsl(var(--accent))',
+          foreground: 'hsl(var(--accent-foreground))',
         },
         card: {
-          DEFAULT:     'hsl(var(--card))',
-          foreground:  'hsl(var(--card-foreground))',
+          DEFAULT:    'hsl(var(--card))',
+          foreground: 'hsl(var(--card-foreground))',
         },
-        // Alterli brand tokens
-        gold:    '#c8a245',
-        'gold-dim': '#6e5520',
       },
       borderRadius: {
         lg: 'var(--radius)',
@@ -49,23 +46,17 @@ export default {
         sm: 'calc(var(--radius) - 4px)',
       },
       fontFamily: {
-        serif:  ['Palatino Linotype', 'Book Antiqua', 'Palatino', 'serif'],
-        sans:   ['system-ui', 'sans-serif'],
-        mono:   ['Courier New', 'monospace'],
+        sans: ['Geist', 'system-ui', 'sans-serif'],
+        mono: ['Geist Mono', 'monospace'],
       },
       keyframes: {
         'fade-in': {
-          from: { opacity: '0', transform: 'translateY(12px)' },
+          from: { opacity: '0', transform: 'translateY(8px)' },
           to:   { opacity: '1', transform: 'translateY(0)' },
-        },
-        'fade-in-slow': {
-          from: { opacity: '0' },
-          to:   { opacity: '1' },
         },
       },
       animation: {
-        'fade-in':      'fade-in 0.5s ease forwards',
-        'fade-in-slow': 'fade-in-slow 1s ease forwards',
+        'fade-in': 'fade-in 0.4s ease forwards',
       },
     },
   },
