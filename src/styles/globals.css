@@ -13,8 +13,8 @@
     --card-foreground: oklch(0.145 0 0);
     --popover: oklch(1 0 0);
     --popover-foreground: oklch(0.145 0 0);
-    --primary: 173 82% 24%;          /* #0d6e64 — 7.4:1 contrast on white */
-    --primary-foreground: 0 0% 100%; /* #ffffff */
+    --primary: oklch(36% 0.12 185);          /* #0d6e64 — 7.4:1 on white */
+    --primary-foreground: oklch(99% 0 0);    /* #ffffff */
     --secondary: oklch(0.967 0.001 286.375);
     --secondary-foreground: oklch(0.21 0.006 285.885);
     --muted: oklch(0.97 0 0);
@@ -22,7 +22,7 @@
     --accent: oklch(0.97 0 0);
     --accent-foreground: oklch(0.205 0 0);
     --destructive: oklch(0.577 0.245 27.325);
-    --destructive-foreground: 40 15% 95%;
+    --destructive-foreground: oklch(97% 0.01 85);
     --border: oklch(0.922 0 0);
     --input: oklch(0.922 0 0);
     --ring: oklch(0.708 0 0);
@@ -52,8 +52,8 @@
     --card-foreground: oklch(0.985 0 0);
     --popover: oklch(0.205 0 0);
     --popover-foreground: oklch(0.985 0 0);
-    --primary: 173 63% 51%;          /* #2dd4bf — 7.3:1 contrast on #0a0a0a */
-    --primary-foreground: 0 0% 4%;   /* #0a0a0a */
+    --primary: oklch(80% 0.15 185);          /* #2dd4bf — 7.3:1 on #0a0a0a */
+    --primary-foreground: oklch(8% 0 0);     /* #0a0a0a */
     --secondary: oklch(0.274 0.006 286.033);
     --secondary-foreground: oklch(0.985 0 0);
     --muted: oklch(0.269 0 0);
@@ -79,7 +79,8 @@
     --sidebar-ring: oklch(0.556 0 0);
   }
   * {
-    @apply border-border outline-ring/50;
+    @apply border-border;
+    outline-color: color-mix(in oklch, var(--ring) 50%, transparent);
   }
   body {
     @apply bg-background text-foreground;
@@ -92,7 +93,7 @@
 /* AAA focus indicators: 3px outline, offset 2px */
 @layer base {
   :focus-visible {
-    outline: 3px solid hsl(var(--ring));
+    outline: 3px solid var(--ring);
     outline-offset: 2px;
   }
 }
@@ -107,12 +108,12 @@
 
 /* Scrollbar */
 ::-webkit-scrollbar { width: 4px; height: 4px; }
-::-webkit-scrollbar-track { background: hsl(var(--background)); }
-::-webkit-scrollbar-thumb { background: hsl(var(--border)); border-radius: 2px; }
-::-webkit-scrollbar-thumb:hover { background: hsl(var(--muted-foreground)); }
+::-webkit-scrollbar-track { background: var(--background); }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+::-webkit-scrollbar-thumb:hover { background: var(--muted-foreground); }
 
 /* Range input */
-input[type=range] { accent-color: hsl(var(--primary)); cursor: pointer; }
+input[type=range] { accent-color: var(--primary); cursor: pointer; }
 
 /* Number input — hide spinners */
 input[type=number]::-webkit-outer-spin-button,
