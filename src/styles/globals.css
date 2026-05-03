@@ -98,6 +98,61 @@
   }
 }
 
+/* ── Gold accent (wizard interactive elements) ─────────────────── */
+:root {
+  --gold: oklch(72% 0.14 70);          /* #c8a245 — 7:1 on dark bg */
+  --gold-dim: color-mix(in oklch, var(--gold) 15%, transparent);
+  --gold-border: color-mix(in oklch, var(--gold) 30%, transparent);
+}
+.dark {
+  --gold: oklch(72% 0.14 70);          /* unchanged — already bright */
+}
+
+/* ── Wizard slide animations ─────────────────────────────────────── */
+@keyframes wizard-slide-from-right {
+  from { transform: translateX(100%); }
+  to   { transform: translateX(0); }
+}
+@keyframes wizard-slide-from-left {
+  from { transform: translateX(-100%); }
+  to   { transform: translateX(0); }
+}
+.wizard-slide-forward {
+  animation: wizard-slide-from-right 250ms ease-out;
+}
+.wizard-slide-back {
+  animation: wizard-slide-from-left 250ms ease-out;
+}
+@media (prefers-reduced-motion: reduce) {
+  .wizard-slide-forward,
+  .wizard-slide-back {
+    animation: none;
+  }
+}
+
+/* ── Conditional field expand (height + opacity) ─────────────────── */
+.field-expand {
+  display: grid;
+  grid-template-rows: 0fr;
+  opacity: 0;
+  transition:
+    grid-template-rows 200ms ease-out,
+    opacity 200ms ease-out;
+}
+.field-expand.open {
+  grid-template-rows: 1fr;
+  opacity: 1;
+}
+.field-expand > div {
+  overflow: hidden;
+}
+@media (prefers-reduced-motion: reduce) {
+  .field-expand,
+  .field-expand.open {
+    transition: none;
+  }
+}
+
 /* Respect reduced motion */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
