@@ -48,7 +48,7 @@ export function WizardLayout({
       <div
         role="progressbar"
         aria-valuenow={step}
-        aria-valuemin={1}
+        aria-valuemin={0}
         aria-valuemax={totalSteps}
         aria-label={`Fortschritt: Schritt ${step} von ${totalSteps}`}
         className="h-1 bg-muted shrink-0"
@@ -93,7 +93,6 @@ export function WizardLayout({
           <Button
             onClick={onNext}
             disabled={nextDisabled}
-            aria-label={nextLabel ?? 'Weiter zum nächsten Schritt'}
           >
             {nextLabel ?? 'Weiter'}
             <ChevronRight size={16} aria-hidden="true" />
