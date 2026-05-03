@@ -42,6 +42,7 @@ export function WizardUntergruppe({ params, onChange, onSoftExit, onAutoAdvance 
     <div className="space-y-8">
       <div className="space-y-2">
         <h2
+          id="untergruppe-frage"
           className="font-medium tracking-tight text-foreground"
           style={{ fontSize: 'clamp(20px, 4vw, 28px)' }}
         >
@@ -54,7 +55,7 @@ export function WizardUntergruppe({ params, onChange, onSoftExit, onAutoAdvance 
 
       <div
         role="radiogroup"
-        aria-label="Arbeitsverhältnis wählen"
+        aria-labelledby="untergruppe-frage"
         className="flex flex-col gap-3"
       >
         {options.map(({ id, label, hint, softExit }) => {
