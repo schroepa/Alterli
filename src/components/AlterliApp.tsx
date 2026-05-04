@@ -56,8 +56,7 @@ export default function AlterliApp() {
   }, [wizardStep]);
 
   const scheduleAutoAdvance = useCallback(() => {
-    clearTimeout(autoAdvanceTimer.current);
-    autoAdvanceTimer.current = setTimeout(goForward, 400);
+    goForward();
   }, [goForward]);
 
   const handleSoftExit = useCallback(() => {
