@@ -1,125 +1,183 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useRef, useCallback } from 'react';
 import { calc } from '@/lib/calc';
 import { INIT_PARAMS } from '@/lib/types';
 import type { CalcParams } from '@/lib/types';
-import { StepBerufsgruppe } from './app/StepBerufsgruppe';
-import { StepEingabe } from './app/StepEingabe';
-import { StepSzenario } from './app/StepSzenario';
+import { WizardLayout } from './app/WizardLayout';
+import { WizardHauptgruppe } from './app/WizardHauptgruppe';
+import { WizardUntergruppe } from './app/WizardUntergruppe';
+import { WizardAlter } from './app/WizardAlter';
+import { WizardEinkommen } from './app/WizardEinkommen';
+import { WizardLeben } from './app/WizardLeben';
+import { WizardVorsorge } from './app/WizardVorsorge';
+import { WizardZiel } from './app/WizardZiel';
+import { SoftExit } from './app/SoftExit';
+import { Transition } from './app/Transition';
+import { EhrlicherMoment } from './app/EhrlicherMoment';
 import { StepErgebnis } from './app/StepErgebnis';
 
-type Step = 1 | 2 | 3 | 4;
+type Screen = 'wizard' | 'soft-exit' | 'transition' | 'ehrlicher-moment' | 'result';
+type WizardStep = 0 | 1 | 2 | 3 | 4 | 5 | 6;
 
-const STEP_LABELS: Record<Step, string> = {
-  1: 'Berufsgruppe',
-  2: 'Eingaben',
-  3: 'Szenarien',
-  4: 'Ergebnis',
-};
+const TOTAL_STEPS = 7;
 
 export default function AlterliApp() {
-  const [step, setStep] = useState<Step>(1);
+  const [screen, setScreen] = useState<Screen>('wizard');
+  const [wizardStep, setWizardStep] = useState<WizardStep>(0);
+  const [slideDir, setSlideDir] = useState<'forward' | 'back' | null>(null);
   const [params, setParams] = useState<CalcParams>(INIT_PARAMS);
+  const autoAdvanceTimer = useRef<ReturnType<typeof setTimeout>>();
 
   const result = useMemo(() => {
-    if (params.hauptgruppe === '' || params.untergruppe === '') return null;
-    return calc(params);
+    if (!params.hauptgruppe || !params.untergruppe) return null;
+    try { return calc(params); } catch { return null; }
   }, [params]);
 
-  const onChange = (update: Partial<CalcParams>) =>
-    setParams((p) => ({ ...p, ...update }));
+  const onChange = useCallback(
+    (update: Partial<CalcParams>) => setParams((p) => ({ ...p, ...update })),
+    [],
+  );
 
-  const onReset = () => {
+  const goForward = useCallback(() => {
+    clearTimeout(autoAdvanceTimer.current);
+    if (wizardStep < 6) {
+      setSlideDir('forward');
+      setWizardStep((s) => (s + 1) as WizardStep);
+    } else {
+      setScreen('transition');
+    }
+  }, [wizardStep]);
+
+  const goBack = useCallback(() => {
+    clearTimeout(autoAdvanceTimer.current);
+    if (wizardStep > 0) {
+      setSlideDir('back');
+      setWizardStep((s) => (s - 1) as WizardStep);
+    }
+  }, [wizardStep]);
+
+  const scheduleAutoAdvance = useCallback(() => {
+    goForward();
+  }, [goForward]);
+
+  const handleSoftExit = useCallback(() => {
+    setScreen('soft-exit');
+  }, []);
+
+  const handleSoftExitBack = useCallback(() => {
+    setScreen('wizard');
+    setSlideDir('back');
+    setWizardStep(1);
+    onChange({ untergruppe: '' });
+  }, [onChange]);
+
+  const handleSoftExitForce = useCallback(() => {
+    onChange({ untergruppe: 'freiberuf_sonstig' });
+    setScreen('wizard');
+    setSlideDir('forward');
+    setWizardStep(2);
+  }, [onChange]);
+
+  const handleTransitionDone = useCallback(() => {
+    setScreen('ehrlicher-moment');
+  }, []);
+
+  const handleEhrlicherMomentContinue = useCallback(() => {
+    setScreen('result');
+  }, []);
+
+  const handleReset = useCallback(() => {
+    clearTimeout(autoAdvanceTimer.current);
     setParams(INIT_PARAMS);
-    setStep(1);
-  };
+    setScreen('wizard');
+    setWizardStep(0);
+    setSlideDir(null);
+  }, []);
+
+  if (screen === 'soft-exit') {
+    return (
+      <SoftExit
+        selectedVW={params.untergruppe}
+        onBack={handleSoftExitBack}
+        onForce={handleSoftExitForce}
+      />
+    );
+  }
+
+  if (screen === 'transition') {
+    return <Transition onDone={handleTransitionDone} />;
+  }
+
+  if (screen === 'ehrlicher-moment' && result) {
+    return (
+      <EhrlicherMoment
+        result={result}
+        onContinue={handleEhrlicherMomentContinue}
+      />
+    );
+  }
+
+  if (screen === 'result' && result) {
+    return (
+      <div className="px-6 py-8 max-w-2xl mx-auto">
+        <StepErgebnis result={result} params={params} onReset={handleReset} />
+      </div>
+    );
+  }
+
+  const nextDisabled: boolean = (() => {
+    switch (wizardStep) {
+      case 0: return params.hauptgruppe === '';
+      case 1: return params.untergruppe === '' || params.untergruppe.startsWith('vw_');
+      case 3: return params.bruttoMonat <= 0;
+      default: return false;
+    }
+  })();
+
+  const nextLabel = wizardStep === 6 ? 'Analyse starten' : undefined;
+
+  const wizardContent = (() => {
+    switch (wizardStep) {
+      case 0: return (
+        <WizardHauptgruppe
+          params={params}
+          onChange={onChange}
+          onAutoAdvance={scheduleAutoAdvance}
+        />
+      );
+      case 1: return (
+        <WizardUntergruppe
+          params={params}
+          onChange={onChange}
+          onSoftExit={handleSoftExit}
+          onAutoAdvance={scheduleAutoAdvance}
+        />
+      );
+      case 2: return <WizardAlter params={params} onChange={onChange} />;
+      case 3: return <WizardEinkommen params={params} onChange={onChange} />;
+      case 4: return <WizardLeben params={params} onChange={onChange} />;
+      case 5: return <WizardVorsorge params={params} onChange={onChange} />;
+      case 6: return <WizardZiel params={params} onChange={onChange} />;
+    }
+  })();
 
   return (
-    <div className="w-full">
-      {/* Screen reader step announcer */}
-      <div
-        role="status"
-        aria-live="polite"
-        aria-atomic="true"
-        className="sr-only"
+    <>
+      <div role="status" aria-live="polite" aria-atomic="true" className="sr-only">
+        Schritt {wizardStep + 1} von {TOTAL_STEPS}
+      </div>
+
+      <WizardLayout
+        step={wizardStep + 1}
+        totalSteps={TOTAL_STEPS}
+        stepKey={wizardStep}
+        slideDir={slideDir}
+        onBack={wizardStep > 0 ? goBack : undefined}
+        onNext={goForward}
+        nextDisabled={nextDisabled}
+        nextLabel={nextLabel}
       >
-        Schritt {step} von 4: {STEP_LABELS[step]}
-      </div>
-
-      {/* Step progress indicator */}
-      <nav aria-label="Fortschritt" className="border-b border-border px-6 py-3">
-        <ol role="list" className="flex items-center gap-1">
-          {([1, 2, 3, 4] as Step[]).map((s) => (
-            <li key={s} role="listitem" className="flex items-center gap-1">
-              <span
-                aria-current={step === s ? 'step' : undefined}
-                className={`text-[10px] font-medium px-2.5 py-1 rounded-full transition-colors ${
-                  s === step
-                    ? 'bg-primary text-primary-foreground'
-                    : s < step
-                    ? 'text-primary'
-                    : 'text-muted-foreground'
-                }`}
-              >
-                {s < step ? (
-                  <span aria-label={`${STEP_LABELS[s]} — abgeschlossen`}>{STEP_LABELS[s]}</span>
-                ) : (
-                  <span aria-label={s === step ? `${STEP_LABELS[s]} — aktuell` : STEP_LABELS[s]}>
-                    {STEP_LABELS[s]}
-                  </span>
-                )}
-              </span>
-              {s < 4 && (
-                <span aria-hidden="true" className="text-muted-foreground/30 text-xs">›</span>
-              )}
-            </li>
-          ))}
-        </ol>
-      </nav>
-
-      {/* Step content */}
-      <div className="px-6 py-8 max-w-2xl mx-auto">
-        {step === 1 && (
-          <StepBerufsgruppe
-            params={params}
-            onChange={onChange}
-            onNext={() => setStep(2)}
-          />
-        )}
-        {step === 2 && (
-          <StepEingabe
-            params={params}
-            onChange={onChange}
-            onNext={() => setStep(3)}
-            onBack={() => setStep(1)}
-          />
-        )}
-        {step === 3 && (
-          <StepSzenario
-            params={params}
-            onChange={onChange}
-            onNext={() => setStep(4)}
-            onBack={() => setStep(2)}
-          />
-        )}
-        {step === 4 && result && (
-          <StepErgebnis
-            result={result}
-            params={params}
-            onReset={onReset}
-          />
-        )}
-        {step === 4 && !result && (
-          <div className="text-center py-12 text-muted-foreground text-sm">
-            <p>Bitte gehe zurück und wähle eine Berufsgruppe.</p>
-            <button
-              onClick={() => setStep(1)}
-              className="mt-4 text-primary underline underline-offset-2 hover:text-primary/80"
-            >
-              Zurück zu Schritt 1
-            </button>
-          </div>
-        )}
-      </div>
-    </div>
+        {wizardContent}
+      </WizardLayout>
+    </>
   );
 }
