@@ -85,13 +85,9 @@ export function WizardZiel({ params, onChange }: Props) {
                 <label
                   key={value}
                   htmlFor={id}
-                  className="flex cursor-pointer items-center gap-3 rounded-lg border border-border px-3 py-2.5 transition-colors hover:bg-accent/40 has-[[data-state=checked]]:border-[var(--gold)] has-[[data-state=checked]]:bg-[var(--gold-dim)]"
+                  className="flex cursor-pointer items-center gap-3 rounded-lg border border-border bg-background px-3 py-2.5 transition-colors hover:bg-accent/40 has-[[data-state=checked]]:border-primary has-[[data-state=checked]]:bg-primary/5"
                 >
-                  <RadioGroupItem
-                    id={id}
-                    value={value}
-                    className="border-muted-foreground data-checked:border-[var(--gold)] data-checked:bg-[var(--gold)]"
-                  />
+                  <RadioGroupItem id={id} value={value} />
                   <span className="flex min-w-0 flex-1 flex-col gap-0.5">
                     <span className="text-sm font-medium text-foreground">{label}</span>
                     <span className="text-[11px] text-muted-foreground">{hint}</span>
