@@ -1,7 +1,7 @@
-import { Slider } from '@/components/ui/slider';
 import { Label } from '@/components/ui/label';
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
 import { GlossarTerm } from './GlossarTerm';
+import { StepperSlider } from './StepperSlider';
 import type { CalcParams } from '@/lib/types';
 
 interface Props {
@@ -40,29 +40,22 @@ export function WizardAlter({ params, onChange }: Props) {
           </span>
         </div>
 
-        <Slider
+        <StepperSlider
+          label="Alter"
           min={18}
           max={66}
           step={1}
-          value={[params.alter]}
-          onValueChange={([v]) => onChange({ alter: v })}
-          aria-label="Alter"
-          aria-valuemin={18}
-          aria-valuemax={66}
-          aria-valuenow={params.alter}
-          aria-valuetext={`${params.alter} Jahre`}
-          className="[&_[data-slot=slider-range]]:bg-[var(--gold)] [&_[data-slot=thumb]]:border-[var(--gold)] [&_[data-slot=thumb]]:bg-[var(--gold)]"
-        />
-
-        <div className="flex justify-between text-xs text-muted-foreground">
-          <span>18</span>
-          <span className="text-sm text-foreground">
-            {jahreLeft > 0
+          value={params.alter}
+          onChange={(v) => onChange({ alter: v })}
+          valueText={`${params.alter} Jahre`}
+          minLabel="18"
+          maxLabel="66"
+          centerLabel={
+            jahreLeft > 0
               ? `${jahreLeft} Jahre bis zur Rente`
-              : 'Rentenalter erreicht'}
-          </span>
-          <span>66</span>
-        </div>
+              : 'Rentenalter erreicht'
+          }
+        />
       </div>
 
       <div className="space-y-3 border-t border-border pt-8">

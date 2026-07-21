@@ -1,8 +1,8 @@
 import { Info } from 'lucide-react';
 import { Switch } from '@/components/ui/switch';
-import { Slider } from '@/components/ui/slider';
 import { Label } from '@/components/ui/label';
 import { cn } from '@/lib/utils';
+import { StepperSlider } from './StepperSlider';
 import type { CalcParams } from '@/lib/types';
 
 interface Props {
@@ -78,23 +78,17 @@ export function WizardVorsorge({ params, onChange }: Props) {
                       {params.jahreRiester}
                     </span>
                   </div>
-                  <Slider
+                  <StepperSlider
+                    label="Jahre des Riester-Vertrags"
                     min={1}
                     max={maxRiesterJahre}
                     step={1}
-                    value={[Math.min(params.jahreRiester, maxRiesterJahre)]}
-                    onValueChange={([v]) => onChange({ jahreRiester: v })}
-                    aria-label="Jahre des Riester-Vertrags"
-                    aria-valuemin={1}
-                    aria-valuemax={maxRiesterJahre}
-                    aria-valuenow={params.jahreRiester}
-                    aria-valuetext={`${params.jahreRiester} Jahre`}
-                    className="[&_[data-slot=slider-range]]:bg-[var(--gold)] [&_[data-slot=thumb]]:border-[var(--gold)] [&_[data-slot=thumb]]:bg-[var(--gold)]"
+                    value={Math.min(params.jahreRiester, maxRiesterJahre)}
+                    onChange={(v) => onChange({ jahreRiester: v })}
+                    valueText={`${params.jahreRiester} Jahre`}
+                    minLabel="1"
+                    maxLabel={String(maxRiesterJahre)}
                   />
-                  <div className="flex justify-between text-xs text-muted-foreground">
-                    <span>1</span>
-                    <span>{maxRiesterJahre}</span>
-                  </div>
                 </div>
               </div>
             </div>

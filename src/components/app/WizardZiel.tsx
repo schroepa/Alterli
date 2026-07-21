@@ -1,7 +1,7 @@
-import { Slider } from '@/components/ui/slider';
 import { Label } from '@/components/ui/label';
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
 import { fmtEur } from '@/lib/utils';
+import { StepperSlider } from './StepperSlider';
 import type { CalcParams } from '@/lib/types';
 
 const FRUEHRENTE_OPTIONS = [
@@ -51,23 +51,17 @@ export function WizardZiel({ params, onChange }: Props) {
               {fmtEur(params.wunschrente)}
             </span>
           </div>
-          <Slider
+          <StepperSlider
+            label="Gewünschte monatliche Rente"
             min={500}
             max={5000}
             step={100}
-            value={[params.wunschrente]}
-            onValueChange={([v]) => onChange({ wunschrente: v })}
-            aria-label="Gewünschte monatliche Rente"
-            aria-valuemin={500}
-            aria-valuemax={5000}
-            aria-valuenow={params.wunschrente}
-            aria-valuetext={`${fmtEur(params.wunschrente)} monatlich`}
-            className="[&_[data-slot=slider-range]]:bg-[var(--gold)] [&_[data-slot=thumb]]:border-[var(--gold)] [&_[data-slot=thumb]]:bg-[var(--gold)]"
+            value={params.wunschrente}
+            onChange={(v) => onChange({ wunschrente: v })}
+            valueText={`${fmtEur(params.wunschrente)} monatlich`}
+            minLabel="500 €"
+            maxLabel="5.000 €"
           />
-          <div className="flex justify-between text-xs text-muted-foreground">
-            <span>500 €</span>
-            <span>5.000 €</span>
-          </div>
         </div>
 
         <div className="border-t border-border" />
