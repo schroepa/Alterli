@@ -10,7 +10,6 @@ import {
 } from 'recharts';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { ThemeToggle } from '@/components/ThemeToggle';
 import { fmtEur, cn } from '@/lib/utils';
 import type { CalcResult, CalcParams, EmpfTyp } from '@/lib/types';
@@ -297,19 +296,43 @@ export function StepErgebnis({ result, params, onReset }: Props) {
                 </div>
 
                 <section className="min-w-0 space-y-3">
-                  <Tabs value={chartTab} onValueChange={setChartTab} className="min-w-0 gap-3">
-                    <TabsList className="flex h-auto w-full flex-wrap justify-start gap-1" aria-label="Diagramm wählen">
-                      <TabsTrigger value="aufbau" className="flex-none">Aufbau</TabsTrigger>
-                      <TabsTrigger value="kapital" className="flex-none">Kapital</TabsTrigger>
-                      <TabsTrigger value="vergleich" className="flex-none">Vergleich</TabsTrigger>
-                      <TabsTrigger value="radar" className="flex-none">Score</TabsTrigger>
-                    </TabsList>
+                  <h4 className="text-xs font-medium uppercase tracking-widest text-muted-foreground">
+                    Diagramme
+                  </h4>
+                  <div
+                    className="flex flex-wrap gap-1.5"
+                    role="tablist"
+                    aria-label="Diagramm wählen"
+                  >
+                    {(
+                      [
+                        { id: 'aufbau', label: 'Aufbau' },
+                        { id: 'kapital', label: 'Kapital' },
+                        { id: 'vergleich', label: 'Vergleich' },
+                        { id: 'radar', label: 'Score' },
+                      ] as const
+                    ).map((t) => (
+                      <Button
+                        key={t.id}
+                        type="button"
+                        role="tab"
+                        aria-selected={chartTab === t.id}
+                        variant={chartTab === t.id ? 'default' : 'outline'}
+                        size="sm"
+                        className="shrink-0"
+                        onClick={() => setChartTab(t.id)}
+                      >
+                        {t.label}
+                      </Button>
+                    ))}
+                  </div>
 
-                    <TabsContent value="aufbau" className="mt-0 min-w-0">
+                  {chartTab === 'aufbau' && (
+                    <div className="min-w-0">
                       <p className="mb-3 text-xs text-muted-foreground">
                         Gestapelt: Basisrente plus private Aufstockung — im Vergleich zu deiner Wunschrente.
                       </p>
-                      <ChartFrame remountKey={`aufbau-${chartTab}`} height={260}>
+                      <ChartFrame remountKey="aufbau" height={260}>
                         <BarChart data={aufbauData} margin={{ top: 8, right: 12, bottom: 8, left: 4 }}>
                           <XAxis dataKey="name" tick={{ fontSize: 11 }} tickLine={false} axisLine={false} />
                           <YAxis tickFormatter={(v) => `${v}€`} tick={{ fontSize: 11 }} tickLine={false} axisLine={false} width={48} />
@@ -330,13 +353,15 @@ export function StepErgebnis({ result, params, onReset }: Props) {
                           )}
                         </BarChart>
                       </ChartFrame>
-                    </TabsContent>
+                    </div>
+                  )}
 
-                    <TabsContent value="kapital" className="mt-0 min-w-0">
+                  {chartTab === 'kapital' && (
+                    <div className="min-w-0">
                       <p className="mb-3 text-xs text-muted-foreground">
                         Private Vorsorgewege — zusätzlich zur {result.g.istBeamter ? 'Pension' : 'gesetzlichen Rente'}.
                       </p>
-                      <ChartFrame remountKey={`kapital-${chartTab}`} height={260}>
+                      <ChartFrame remountKey="kapital" height={260}>
                         <AreaChart data={result.proj} margin={{ top: 8, right: 12, bottom: 8, left: 4 }}>
                           <XAxis dataKey="alter" tick={{ fontSize: 11 }} tickLine={false} axisLine={false} />
                           <YAxis tickFormatter={(v) => `${(v / 1000).toFixed(0)}k`} tick={{ fontSize: 11 }} tickLine={false} axisLine={false} width={40} />
@@ -351,13 +376,15 @@ export function StepErgebnis({ result, params, onReset }: Props) {
                           <Area type="monotone" dataKey="etf" name="ETF" stroke={CHART_COLORS.etf} fill={CHART_COLORS.etf} fillOpacity={0.08} strokeWidth={2} />
                         </AreaChart>
                       </ChartFrame>
-                    </TabsContent>
+                    </div>
+                  )}
 
-                    <TabsContent value="vergleich" className="mt-0 min-w-0">
+                  {chartTab === 'vergleich' && (
+                    <div className="min-w-0">
                       <p className="mb-3 text-xs text-muted-foreground">
                         Einzelvergleich — {basisLabel} ist die Basis, Riester/Depot/ETF die private Aufstockung.
                       </p>
-                      <ChartFrame remountKey={`vergleich-${chartTab}`} height={240}>
+                      <ChartFrame remountKey="vergleich" height={240}>
                         <BarChart data={vergleichData} margin={{ top: 8, right: 12, bottom: 8, left: 4 }}>
                           <XAxis dataKey="name" tick={{ fontSize: 11 }} tickLine={false} axisLine={false} />
                           <YAxis tickFormatter={(v) => `${v}€`} tick={{ fontSize: 11 }} tickLine={false} axisLine={false} width={44} />
@@ -372,18 +399,20 @@ export function StepErgebnis({ result, params, onReset }: Props) {
                           </Bar>
                         </BarChart>
                       </ChartFrame>
-                    </TabsContent>
+                    </div>
+                  )}
 
-                    <TabsContent value="radar" className="mt-0 min-w-0">
-                      <ChartFrame remountKey={`radar-${chartTab}`} height={260}>
+                  {chartTab === 'radar' && (
+                    <div className="min-w-0">
+                      <ChartFrame remountKey="radar" height={260}>
                         <RadarChart data={radarData}>
                           <PolarGrid stroke="var(--border)" />
                           <PolarAngleAxis dataKey="subject" tick={{ fontSize: 11 }} />
                           <Radar name="Score" dataKey="value" stroke="var(--primary)" fill="var(--primary)" fillOpacity={0.15} />
                         </RadarChart>
                       </ChartFrame>
-                    </TabsContent>
-                  </Tabs>
+                    </div>
+                  )}
                 </section>
 
                 {result.empf.length > 0 && (
