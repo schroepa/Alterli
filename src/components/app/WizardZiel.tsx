@@ -106,9 +106,10 @@ export function WizardZiel({ params, onChange }: Props) {
         <div className="border-t border-border" />
 
         <div className="space-y-3">
-          <Label className="text-sm text-muted-foreground">Planst du etwas Größeres? (optional)</Label>
-          <p className="text-xs text-muted-foreground">
-            Diese Angaben fließen noch nicht in die Berechnung ein — sie kommen in einer späteren Version.
+          <Label className="text-sm text-muted-foreground">Was-wäre-wenn</Label>
+          <p className="text-xs text-muted-foreground leading-relaxed">
+            Nach der Analyse kannst du Szenarien wie Kind, Partnerschaft oder Gehaltsplus
+            live durchspielen — ohne die Eingaben hier vorab festzulegen.
           </p>
         </div>
       </div>

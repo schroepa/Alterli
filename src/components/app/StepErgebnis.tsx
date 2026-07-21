@@ -12,6 +12,10 @@ import { fmtEur } from '@/lib/utils';
 import type { CalcResult, CalcParams, EmpfTyp } from '@/lib/types';
 import { EinkommensSchichten } from './EinkommensSchichten';
 import { RiesterEntscheidung } from './RiesterEntscheidung';
+import { WasBedeutetDas } from './WasBedeutetDas';
+import { Timeline2027 } from './Timeline2027';
+import { WasWaereWenn } from './WasWaereWenn';
+import { GlossarTerm } from './GlossarTerm';
 
 interface Props {
   result: CalcResult;
@@ -124,7 +128,9 @@ export function StepErgebnis({ result, params, onReset }: Props) {
           <p className="text-[10px] text-muted-foreground mt-1">Basis + Aufstockung</p>
         </div>
         <div role="listitem" className="bg-card p-4">
-          <p className="text-[10px] text-muted-foreground uppercase tracking-widest mb-1">Versorgungslücke</p>
+          <p className="text-[10px] text-muted-foreground uppercase tracking-widest mb-1">
+            <GlossarTerm term="versorgungsluecke">Versorgungslücke</GlossarTerm>
+          </p>
           <p className={`text-xl font-semibold tabular-nums ${result.luecke > 0 ? 'text-destructive' : 'text-emerald-600 dark:text-emerald-400'}`}>
             {result.luecke > 0 ? `−${fmtEur(result.luecke)}` : 'Keine Lücke'}
           </p>
@@ -136,6 +142,17 @@ export function StepErgebnis({ result, params, onReset }: Props) {
         </div>
       </div>
       </div>
+
+      <Separator />
+
+      <WasBedeutetDas result={result} />
+
+      {result.hatRiester && (
+        <>
+          <Separator />
+          <Timeline2027 hatRiester={result.hatRiester} />
+        </>
+      )}
 
       <Separator />
 
@@ -258,6 +275,10 @@ export function StepErgebnis({ result, params, onReset }: Props) {
           <RiesterEntscheidung result={result} />
         </>
       )}
+
+      <Separator />
+
+      <WasWaereWenn params={params} baseResult={result} />
 
       <Separator />
 

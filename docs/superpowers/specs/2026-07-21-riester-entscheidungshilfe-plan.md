@@ -1,7 +1,7 @@
 # alterli — Riester-Entscheidungshilfe & Oberflächen-Ausbau
 
 **Datum:** 2026-07-21  
-**Status:** Approved — Phase 1 + 2 umgesetzt  
+**Status:** Approved — Phase 1–4 umgesetzt  
 **Kontext:** Erweiterung des bestehenden Analysten (Wizard → Ehrlicher Moment → Ergebnis)
 
 ### Abgestimmte Defaults
@@ -19,7 +19,7 @@
 | 1 — Schichtenmodell / Copy | ✅ |
 | 2 — Entscheidungshilfe A–D | ✅ |
 | 3 — Responsive + shadcn | ✅ (Wizard-Sidebar, Ergebnis-Grid, Mobile-Nav, Button/ToggleGroup) |
-| 4 — Was-wäre-wenn & P1 | offen |
+| 4 — Was-wäre-wenn & P1 | ✅ (Simulator, Sparrate, Timeline 2027, Glossar-Tooltips, Geschlecht-UI) |
 
 ---
 
