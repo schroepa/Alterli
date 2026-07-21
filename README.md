@@ -44,7 +44,7 @@ npm install
 npm run dev
 ```
 
-Öffne [http://localhost:4321](http://localhost:4321).
+Öffne [http://localhost:4321](http://localhost:4321) (Marketing) oder [http://localhost:4321/app](http://localhost:4321/app) (Analyse).
 
 ## Deploy
 
