@@ -62,7 +62,9 @@ export function EhrlicherMoment({ result, onContinue }: Props) {
       aria-labelledby="ehrlicher-moment-heading"
     >
       <span className="text-sm font-semibold tracking-tight text-foreground self-start w-full max-w-lg mx-auto">
-        alterli
+        <a href="/" className="hover:text-primary transition-colors" aria-label="alterli — zur Startseite">
+          alter<span className="text-primary">li</span>
+        </a>
       </span>
 
       <div className="w-full max-w-lg mx-auto space-y-8">

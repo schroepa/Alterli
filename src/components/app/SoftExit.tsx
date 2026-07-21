@@ -14,7 +14,9 @@ export function SoftExit({ selectedVW, onBack, onForce }: Props) {
   return (
     <div className="flex h-full min-h-0 flex-col overflow-y-auto bg-background px-6 py-8">
       <header className="mb-8">
-        <span className="text-sm font-semibold tracking-tight">alterli</span>
+        <a href="/" className="text-sm font-semibold tracking-tight hover:text-primary transition-colors" aria-label="alterli — zur Startseite">
+          alter<span className="text-primary">li</span>
+        </a>
       </header>
 
       <main id="soft-exit-content" className="flex-1 max-w-lg mx-auto w-full space-y-8">

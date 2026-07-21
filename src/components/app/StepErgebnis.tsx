@@ -8,6 +8,7 @@ import {
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
+import { ThemeToggle } from '@/components/ThemeToggle';
 import { fmtEur, cn } from '@/lib/utils';
 import type { CalcResult, CalcParams, EmpfTyp } from '@/lib/types';
 import { EinkommensSchichten } from './EinkommensSchichten';
@@ -121,6 +122,7 @@ export function StepErgebnis({ result, params, onReset }: Props) {
               <RotateCcw size={14} aria-hidden="true" />
               <span className="hidden sm:inline">Neu</span>
             </Button>
+            <ThemeToggle />
           </div>
         </div>
       </header>

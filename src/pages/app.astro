@@ -1,0 +1,21 @@
+---
+import Base from '../layouts/Base.astro';
+import AlterliApp from '../components/AlterliApp';
+---
+
+<!--
+  Dedizierte App-Seite — ohne Marketing-Nav, Features oder Footer.
+  Nutzer bleiben im Fokus der Analyse.
+-->
+<Base
+  title="Analyse — alterli"
+  description="Starte deine ehrliche Altersvorsorge-Analyse. Lokal im Browser, ohne Anmeldung."
+>
+  <main
+    id="alterli-app"
+    class="h-[100dvh] w-full overflow-hidden bg-background"
+    aria-label="alterli Analyse"
+  >
+    <AlterliApp client:load />
+  </main>
+</Base>
