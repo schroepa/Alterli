@@ -86,9 +86,11 @@ export function calc(p: CalcParams): CalcResult {
   const etfR        = Math.round(endE / (rentendauer * 12));
   const meitErs     = p.hatImmobilie && p.immobilieSelbst ? p.kaltmiete : 0;
 
-  let gesamtRente = gesetzRente + meitErs;
+  // Alterseinkommen = Basis (GRV oder Pension) + Aufstockungen (Riester, VBL, Mietersparnis)
+  let gesamtRente = meitErs;
+  if (g.istBeamter)  gesamtRente += pensionRente;
+  else if (g.hatGRV) gesamtRente += gesetzRente;
   if (hatRiester)    gesamtRente += riesterR;
-  if (g.istBeamter)  gesamtRente = pensionRente + meitErs;
   if (g.istTvoed)    gesamtRente += vblRente;
 
   const luecke = Math.max(0, p.wunschrente - gesamtRente);
@@ -114,6 +116,9 @@ export function calc(p: CalcParams): CalcResult {
 
   const fmtEur = (n: number) => Math.round(n).toLocaleString('de-DE') + ' €';
 
+  const basisRente = g.istBeamter ? pensionRente : gesetzRente;
+  const basisName = g.istBeamter ? 'Pension' : 'gesetzliche Rente';
+
   let ehrlichText = '';
   if (g.istVW) {
     ehrlichText = `Als Mitglied eines berufsständischen Versorgungswerks gelten für dich eigene Regeln. Eine individuelle Beratung durch einen spezialisierten Rentenberater ist hier unverzichtbar.`;
@@ -122,15 +127,19 @@ export function calc(p: CalcParams): CalcResult {
   } else if (g.istSelbst && !p.hatBU) {
     ehrlichText = `Als Selbstständige:r hast du keinen gesetzlichen Schutz bei Erwerbsminderung. Ohne Absicherung gefährdest du nicht nur deine Rente — sondern alles was du aufgebaut hast.`;
   } else if (hatRiester && p.kinder > 0) {
-    ehrlichText = `Mit ${p.kinder} ${p.kinder === 1 ? 'Kind' : 'Kindern'} gehörst du zu den stärksten Förderfällen im deutschen System. ${fmtEur(zulage)} Staatszulage pro Jahr — das alte Riester-System ist für dich noch klar im Vorteil.`;
+    ehrlichText = `Deine ${basisName} liegt bei ca. ${fmtEur(basisRente)}/Monat. Riester stockt das um ca. ${fmtEur(riesterR)} auf — zusammen ${fmtEur(gesamtRente)}. Mit ${p.kinder} ${p.kinder === 1 ? 'Kind' : 'Kindern'} und ${fmtEur(zulage)} Zulage/Jahr ist Riester für dich noch klar im Vorteil.`;
   } else if (hatRiester && p.kinder === 0 && !p.immobilieSelbst && zvE < 35000) {
-    ehrlichText = `Du zahlst ${fmtEur(minEigen)} im Jahr in deinen Riester und bekommst dafür ${fmtEur(zulage)} Zulage. Das Altersvorsorgedepot 2027 könnte dein Kapital bis zu 4× schneller wachsen lassen.`;
+    ehrlichText = `Deine ${basisName}: ca. ${fmtEur(basisRente)}/Monat. Riester kommt zusätzlich mit ca. ${fmtEur(riesterR)} dazu — Summe ${fmtEur(gesamtRente)}. Du zahlst ${fmtEur(minEigen)}/Jahr und bekommst ${fmtEur(zulage)} Zulage; das Altersvorsorgedepot 2027 könnte schneller wachsen.`;
   } else if (wohnMoegl) {
-    ehrlichText = `Du kannst ${fmtEur(wohnHebel)} aus deinem Riester-Kapital direkt zur Tilgung deiner Hypothek einsetzen — das spart Zinsen und verkürzt die Restlaufzeit.`;
+    ehrlichText = `Neben ca. ${fmtEur(basisRente)} ${basisName} kannst du ${fmtEur(wohnHebel)} aus dem Riester direkt zur Hypothekentilgung einsetzen — das spart Zinsen und verkürzt die Restlaufzeit.`;
   } else if (!hatRiester && !p.hatImmobilie && !g.istBeamter && !g.istVW) {
     ehrlichText = `Du hast keine private Altersvorsorge und kein Wohneigentum. Deine geschätzte gesetzliche Rente: ${fmtEur(gesetzRente)}/Monat. Dein Wunsch: ${fmtEur(p.wunschrente)}/Monat.`;
+  } else if (hatRiester && luecke > 400) {
+    ehrlichText = `Deine ${basisName} (ca. ${fmtEur(basisRente)}) plus Riester (ca. ${fmtEur(riesterR)}) ergeben ${fmtEur(gesamtRente)}/Monat — ${fmtEur(luecke)} unter deinem Ziel. Fehlender Kapitalstock: ca. ${fmtEur(luecke * 12 * rentendauer)}.`;
   } else if (luecke > 400) {
-    ehrlichText = `Deine geschätzte Rente liegt ${fmtEur(luecke)}/Monat unter deinem Ziel. Das entspricht einem fehlenden Kapitalstock von ca. ${fmtEur(luecke * 12 * rentendauer)}.`;
+    ehrlichText = `Dein geschätztes Alterseinkommen liegt ${fmtEur(luecke)}/Monat unter deinem Ziel. Das entspricht einem fehlenden Kapitalstock von ca. ${fmtEur(luecke * 12 * rentendauer)}.`;
+  } else if (hatRiester) {
+    ehrlichText = `Deine ${basisName} von ca. ${fmtEur(basisRente)} wird durch Riester um ca. ${fmtEur(riesterR)} aufgestockt — zusammen ${fmtEur(gesamtRente)}/Monat. ${!p.hatBU ? 'Eine BU-Versicherung fehlt noch.' : 'Überprüfe deinen Plan alle 2–3 Jahre.'}`;
   } else {
     ehrlichText = `Dein Vorsorge-Profil ist solide. Die wichtigste offene Frage: ${!p.hatBU ? 'eine BU-Versicherung fehlt noch.' : 'Überprüfe deinen Plan alle 2–3 Jahre.'}`;
   }
@@ -145,7 +154,8 @@ export function calc(p: CalcParams): CalcResult {
   if (g.istBeamter) empf.push({ typ: 'info', titel: 'Pensionsanspruch kalkulieren', text: `Als Beamte:r hast du Anspruch auf ca. ${fmtEur(pensionRente)}/Monat Pension.` });
   if (g.istTvoed) empf.push({ typ: 'info', titel: 'VBL-Zusatzversorgung berücksichtigen', text: `Als TVöD-Beschäftigte:r hast du Anspruch auf VBL-Leistungen, Schätzbetrag: ca. ${fmtEur(vblRente)}/Monat.` });
   if (g.istMinijob) empf.push({ typ: 'neutral', titel: 'Minijob und Riester', text: 'Als Minijobber:in bist du riesterberechtigt wenn du auf die Rentenversicherungsfreiheit verzichtest.' });
-  if (luecke > 300) empf.push({ typ: 'warnung', titel: `Versorgungslücke: ${fmtEur(luecke)}/Monat`, text: `Um dein Rentenziel von ${fmtEur(p.wunschrente)}/Monat zu erreichen fehlen ${fmtEur(luecke)}/Monat.` });
+  if (luecke > 300) empf.push({ typ: 'warnung', titel: `Versorgungslücke: ${fmtEur(luecke)}/Monat`, text: `Basis (${basisName} ca. ${fmtEur(basisRente)})${hatRiester ? ` plus Riester (ca. ${fmtEur(riesterR)})` : ''} ergeben ${fmtEur(gesamtRente)}. Bis zu deinem Ziel von ${fmtEur(p.wunschrente)} fehlen ${fmtEur(luecke)}/Monat.` });
+  if (hatRiester) empf.push({ typ: 'info', titel: 'Riester ist Aufstockung', text: `Riester ersetzt nicht die ${basisName} — er kommt oben drauf. Dein Fundament: ca. ${fmtEur(basisRente)}/Monat.` });
   if (p.verheiratet && !p.partnerRiester && hatRiester) empf.push({ typ: 'info', titel: 'Mittelbarer Riester für Partner', text: 'Dein:e Partner:in kann über einen mittelbaren Vertrag ebenfalls 175 €/Jahr Förderung erhalten.' });
 
   return {

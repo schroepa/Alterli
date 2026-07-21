@@ -1,8 +1,16 @@
 # alterli — Riester-Entscheidungshilfe & Oberflächen-Ausbau
 
 **Datum:** 2026-07-21  
-**Status:** Draft — zur Abstimmung  
+**Status:** Approved — Phase 1 in Umsetzung  
 **Kontext:** Erweiterung des bestehenden Analysten (Wizard → Ehrlicher Moment → Ergebnis)
+
+### Abgestimmte Defaults
+
+1. Kündigung: grobe Euro-Warnzahl (Phase 2)  
+2. Entscheidungsmodul: Abschnitt auf der Ergebnisseite  
+3. Vertragsguthaben: optional mit Fallback auf Schätzung  
+4. Desktop: zuerst Layout in `#app`, Route `/app` später  
+5. Label: „Beitragsfrei stellen (stilllegen)“ mit Tooltip
 
 ---
 

@@ -2,6 +2,7 @@ import { RotateCcw, AlertTriangle, CheckCircle2, Info } from 'lucide-react';
 import {
   AreaChart, Area, XAxis, YAxis, Tooltip as RechartTooltip, ResponsiveContainer,
   BarChart, Bar, Cell, RadarChart, Radar, PolarGrid, PolarAngleAxis,
+  Legend,
 } from 'recharts';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -9,6 +10,7 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { Separator } from '@/components/ui/separator';
 import { fmtEur } from '@/lib/utils';
 import type { CalcResult, CalcParams, EmpfTyp } from '@/lib/types';
+import { EinkommensSchichten } from './EinkommensSchichten';
 
 interface Props {
   result: CalcResult;
@@ -33,11 +35,16 @@ const CHART_COLORS = {
   riester: 'hsl(173, 82%, 24%)',
   depot:   '#6366f1',
   etf:     '#f59e0b',
+  basis:   '#64748b',
+  vbl:     '#0284c7',
+  miete:   '#059669',
 };
 
 export function StepErgebnis({ result, params, onReset }: Props) {
   const ampel = AMPEL_CONFIG[result.ampel];
   const AmpelIcon = ampel.icon;
+  const basisLabel = result.g.istBeamter ? 'Pension' : 'Gesetzl. Rente';
+  const basisWert = result.g.istBeamter ? result.pensionRente : result.gesetzRente;
 
   const radarData = [
     { subject: 'Förderung', value: result.foerderScore },
@@ -50,8 +57,26 @@ export function StepErgebnis({ result, params, onReset }: Props) {
     { name: 'Riester',  value: result.riesterR,  color: CHART_COLORS.riester },
     { name: 'Depot',    value: result.depotR,    color: CHART_COLORS.depot },
     { name: 'ETF',      value: result.etfR,      color: CHART_COLORS.etf },
-    ...(result.g.istBeamter ? [{ name: 'Pension', value: result.pensionRente, color: '#10b981' }] : []),
-    ...(result.g.hatGRV     ? [{ name: 'GRV',     value: result.gesetzRente,  color: '#64748b' }] : []),
+    ...(result.g.istBeamter ? [{ name: 'Pension', value: result.pensionRente, color: CHART_COLORS.miete }] : []),
+    ...(result.g.hatGRV     ? [{ name: 'GRV',     value: result.gesetzRente,  color: CHART_COLORS.basis }] : []),
+  ];
+
+  /** Gestapelte Säule: Basis + private Aufstockung vs. Wunsch */
+  const aufbauData = [
+    {
+      name: 'Dein Aufbau',
+      basis: basisWert,
+      riester: result.hatRiester ? result.riesterR : 0,
+      vbl: result.g.istTvoed ? result.vblRente : 0,
+      miete: result.meitErs,
+    },
+    {
+      name: 'Wunschrente',
+      basis: params.wunschrente,
+      riester: 0,
+      vbl: 0,
+      miete: 0,
+    },
   ];
 
   return (
@@ -84,11 +109,15 @@ export function StepErgebnis({ result, params, onReset }: Props) {
         <p className="text-sm leading-relaxed text-foreground">{result.ehrlichText}</p>
       </div>
 
+      {/* Schichtenmodell — zentrale Klarheit */}
+      <EinkommensSchichten result={result} params={params} />
+
       {/* KPIs */}
       <div className="grid grid-cols-2 sm:grid-cols-3 gap-px bg-border rounded-lg overflow-hidden" role="list" aria-label="Wichtigste Kennzahlen">
         <div role="listitem" className="bg-card p-4">
-          <p className="text-[10px] text-muted-foreground uppercase tracking-widest mb-1">Gesamtrente / Mo.</p>
+          <p className="text-[10px] text-muted-foreground uppercase tracking-widest mb-1">Alterseinkommen / Mo.</p>
           <p className="text-xl font-semibold tabular-nums">{fmtEur(result.gesamtRente)}</p>
+          <p className="text-[10px] text-muted-foreground mt-1">Basis + Aufstockung</p>
         </div>
         <div role="listitem" className="bg-card p-4">
           <p className="text-[10px] text-muted-foreground uppercase tracking-widest mb-1">Versorgungslücke</p>
@@ -97,26 +126,67 @@ export function StepErgebnis({ result, params, onReset }: Props) {
           </p>
         </div>
         <div role="listitem" className="bg-card p-4 col-span-2 sm:col-span-1">
-          <p className="text-[10px] text-muted-foreground uppercase tracking-widest mb-1">Gesetzl. Rente / Mo.</p>
-          <p className="text-xl font-semibold tabular-nums">{fmtEur(result.gesetzRente)}</p>
+          <p className="text-[10px] text-muted-foreground uppercase tracking-widest mb-1">{basisLabel} / Mo.</p>
+          <p className="text-xl font-semibold tabular-nums">{fmtEur(basisWert)}</p>
+          <p className="text-[10px] text-muted-foreground mt-1">Dein Fundament</p>
         </div>
       </div>
 
       <Separator />
 
       {/* Charts */}
-      <Tabs defaultValue="kapital">
-        <TabsList aria-label="Diagramm-Ansicht wählen">
+      <Tabs defaultValue="aufbau">
+        <TabsList aria-label="Diagramm-Ansicht wählen" className="flex h-auto w-full flex-wrap justify-start gap-1">
+          <TabsTrigger value="aufbau">Einkommensaufbau</TabsTrigger>
           <TabsTrigger value="kapital">Kapitalentwicklung</TabsTrigger>
-          <TabsTrigger value="vergleich">Monatsrente Vergleich</TabsTrigger>
+          <TabsTrigger value="vergleich">Vorsorge-Vergleich</TabsTrigger>
           <TabsTrigger value="radar">Score-Übersicht</TabsTrigger>
         </TabsList>
+
+        <TabsContent value="aufbau" className="mt-4">
+          <figure role="img" aria-labelledby="chart-aufbau-title">
+            <figcaption id="chart-aufbau-title" className="sr-only">
+              Gestapeltes Alterseinkommen: {basisLabel} {fmtEur(basisWert)}
+              {result.hatRiester ? `, Riester ${fmtEur(result.riesterR)}` : ''}
+              {result.g.istTvoed && result.vblRente > 0 ? `, VBL ${fmtEur(result.vblRente)}` : ''}
+              {result.meitErs > 0 ? `, Mietersparnis ${fmtEur(result.meitErs)}` : ''}
+              . Summe {fmtEur(result.gesamtRente)}. Wunschrente {fmtEur(params.wunschrente)}.
+            </figcaption>
+            <p className="text-xs text-muted-foreground mb-3">
+              Gestapelt: Basisrente plus private Aufstockung — im Vergleich zu deiner Wunschrente.
+            </p>
+            <ResponsiveContainer width="100%" height={240}>
+              <BarChart data={aufbauData} margin={{ top: 8, right: 8, bottom: 0, left: 0 }}>
+                <XAxis dataKey="name" tick={{ fontSize: 10 }} tickLine={false} axisLine={false} />
+                <YAxis tickFormatter={(v) => `${v}€`} tick={{ fontSize: 10 }} tickLine={false} axisLine={false} width={44} />
+                <RechartTooltip
+                  formatter={(v: number, name: string) => [fmtEur(v), name]}
+                  contentStyle={{ fontSize: 11, border: '1px solid var(--border)', borderRadius: '6px', background: 'var(--card)' }}
+                />
+                <Legend wrapperStyle={{ fontSize: 11 }} />
+                <Bar dataKey="basis" name={basisLabel} stackId="a" fill={CHART_COLORS.basis} radius={[0, 0, 0, 0]} />
+                {result.g.istTvoed && result.vblRente > 0 && (
+                  <Bar dataKey="vbl" name="VBL" stackId="a" fill={CHART_COLORS.vbl} />
+                )}
+                {result.hatRiester && (
+                  <Bar dataKey="riester" name="Riester" stackId="a" fill={CHART_COLORS.riester} />
+                )}
+                {result.meitErs > 0 && (
+                  <Bar dataKey="miete" name="Mietersparnis" stackId="a" fill={CHART_COLORS.miete} radius={[4, 4, 0, 0]} />
+                )}
+              </BarChart>
+            </ResponsiveContainer>
+          </figure>
+        </TabsContent>
 
         <TabsContent value="kapital" className="mt-4">
           <figure role="img" aria-labelledby="chart-kapital-title">
             <figcaption id="chart-kapital-title" className="sr-only">
               Kapitalentwicklung: Riester {fmtEur(result.endR)}, Altersvorsorgedepot {fmtEur(result.endD)}, ETF {fmtEur(result.endE)} bis Alter {params.fruehRente || 67}
             </figcaption>
+            <p className="text-xs text-muted-foreground mb-3">
+              Vergleich privater Vorsorgewege — zusätzlich zur {result.g.istBeamter ? 'Pension' : 'gesetzlichen Rente'}.
+            </p>
             <ResponsiveContainer width="100%" height={240}>
               <AreaChart data={result.proj} margin={{ top: 8, right: 8, bottom: 0, left: 0 }}>
                 <XAxis dataKey="alter" tick={{ fontSize: 10 }} tickLine={false} axisLine={false} />
@@ -139,6 +209,9 @@ export function StepErgebnis({ result, params, onReset }: Props) {
             <figcaption id="chart-vergleich-title" className="sr-only">
               Monatliche Rente nach Vorsorgetyp: {vergleichData.map(d => `${d.name} ${fmtEur(d.value)}`).join(', ')}
             </figcaption>
+            <p className="text-xs text-muted-foreground mb-3">
+              Einzelvergleich der Säulen — die {basisLabel} ist die Basis, Riester/Depot/ETF sind Alternativen zur privaten Aufstockung.
+            </p>
             <ResponsiveContainer width="100%" height={220}>
               <BarChart data={vergleichData} margin={{ top: 8, right: 8, bottom: 0, left: 0 }}>
                 <XAxis dataKey="name" tick={{ fontSize: 10 }} tickLine={false} axisLine={false} />
