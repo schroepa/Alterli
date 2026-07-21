@@ -1,15 +1,15 @@
 import { Label } from '@/components/ui/label';
-import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { fmtEur } from '@/lib/utils';
 import { StepperSlider } from './StepperSlider';
 import type { CalcParams } from '@/lib/types';
 
 const FRUEHRENTE_OPTIONS = [
-  { value: '0',  label: 'Mit 67' },
-  { value: '65', label: 'Mit 65' },
-  { value: '63', label: 'Mit 63' },
-  { value: '62', label: 'Mit 62' },
-  { value: '60', label: 'Mit 60' },
+  { value: '0',  label: 'Regulär mit 67', hint: 'Ohne Frühabschlag' },
+  { value: '65', label: 'Mit 65', hint: 'Frühabschlag möglich' },
+  { value: '63', label: 'Mit 63', hint: 'Frühabschlag möglich' },
+  { value: '62', label: 'Mit 62', hint: 'Frühabschlag möglich' },
+  { value: '60', label: 'Mit 60', hint: 'Frühabschlag möglich' },
 ] as const;
 
 interface Props {
@@ -67,28 +67,39 @@ export function WizardZiel({ params, onChange }: Props) {
         <div className="border-t border-border" />
 
         <div className="space-y-3">
-          <Label className="text-sm text-foreground">Frühpension geplant?</Label>
-          <ToggleGroup
-            type="single"
+          <Label id="fruehpension-label" className="text-sm text-foreground">
+            Frühpension geplant?
+          </Label>
+          <p className="text-xs text-muted-foreground leading-relaxed">
+            Wähle dein geplantes Rentenalter — bei früherem Start können Abschläge anfallen.
+          </p>
+          <RadioGroup
             value={String(params.fruehRente)}
-            onValueChange={(v) => {
-              if (v !== '') onChange({ fruehRente: Number(v) });
-            }}
-            variant="outline"
-            spacing={2}
-            className="flex flex-wrap justify-start"
-            aria-label="Rentenalter wählen"
+            onValueChange={(v) => onChange({ fruehRente: Number(v) })}
+            aria-labelledby="fruehpension-label"
+            className="gap-2"
           >
-            {FRUEHRENTE_OPTIONS.map(({ value, label }) => (
-              <ToggleGroupItem
-                key={value}
-                value={value}
-                className="px-3 data-[state=on]:border-[var(--gold)] data-[state=on]:bg-[var(--gold-dim)] data-[state=on]:text-[var(--gold)]"
-              >
-                {label}
-              </ToggleGroupItem>
-            ))}
-          </ToggleGroup>
+            {FRUEHRENTE_OPTIONS.map(({ value, label, hint }) => {
+              const id = `frueh-${value}`;
+              return (
+                <label
+                  key={value}
+                  htmlFor={id}
+                  className="flex cursor-pointer items-center gap-3 rounded-lg border border-border px-3 py-2.5 transition-colors hover:bg-accent/40 has-[[data-state=checked]]:border-[var(--gold)] has-[[data-state=checked]]:bg-[var(--gold-dim)]"
+                >
+                  <RadioGroupItem
+                    id={id}
+                    value={value}
+                    className="border-muted-foreground data-checked:border-[var(--gold)] data-checked:bg-[var(--gold)]"
+                  />
+                  <span className="flex min-w-0 flex-1 flex-col gap-0.5">
+                    <span className="text-sm font-medium text-foreground">{label}</span>
+                    <span className="text-[11px] text-muted-foreground">{hint}</span>
+                  </span>
+                </label>
+              );
+            })}
+          </RadioGroup>
 
           {abzug && (
             <p className="text-xs text-amber-600 dark:text-amber-400">
