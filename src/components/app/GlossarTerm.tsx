@@ -1,4 +1,5 @@
 import { CircleHelp } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 import {
   Tooltip,
   TooltipContent,
@@ -41,18 +42,19 @@ export function GlossarTerm({ term, children, className }: Props) {
     <TooltipProvider delayDuration={200}>
       <Tooltip>
         <TooltipTrigger asChild>
-          <button
+          <Button
             type="button"
+            variant="link"
             className={cn(
-              'inline-flex items-center gap-0.5 border-b border-dotted border-muted-foreground/50 text-inherit',
-              'hover:border-foreground/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-sm',
+              'h-auto inline-flex items-center gap-0.5 p-0 text-inherit font-inherit underline-offset-2',
+              'border-b border-dotted border-muted-foreground/50 rounded-none hover:no-underline',
               className,
             )}
             aria-label={`Erklärung: ${typeof children === 'string' ? children : term}`}
           >
             {children ?? term}
             <CircleHelp size={12} className="opacity-60" aria-hidden="true" />
-          </button>
+          </Button>
         </TooltipTrigger>
         <TooltipContent side="top" sideOffset={6} className="max-w-[260px] text-left leading-relaxed">
           {text}
