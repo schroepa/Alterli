@@ -1,5 +1,6 @@
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { ThemeToggle } from '@/components/ThemeToggle';
 import { cn } from '@/lib/utils';
 import type { ReactNode } from 'react';
 
@@ -42,16 +43,25 @@ export function WizardLayout({
     <div className="flex h-full min-h-0 w-full flex-col bg-background">
       {/* Header */}
       <header className="flex shrink-0 items-center justify-between border-b border-border px-4 py-3 sm:px-6">
-        <span className="text-sm font-semibold tracking-tight">alterli</span>
-        <span
-          className="text-xs tabular-nums text-muted-foreground lg:hidden"
-          aria-label={`Schritt ${step} von ${totalSteps}`}
+        <a
+          href="/"
+          className="text-sm font-semibold tracking-tight text-foreground hover:text-primary transition-colors"
+          aria-label="alterli — zur Startseite"
         >
-          {step} / {totalSteps}
-        </span>
-        <span className="hidden text-xs text-muted-foreground lg:inline">
-          Schritt {step} von {totalSteps} · {STEP_LABELS[step - 1]}
-        </span>
+          alter<span className="text-primary">li</span>
+        </a>
+        <div className="flex items-center gap-2">
+          <span
+            className="text-xs tabular-nums text-muted-foreground lg:hidden"
+            aria-label={`Schritt ${step} von ${totalSteps}`}
+          >
+            {step} / {totalSteps}
+          </span>
+          <span className="hidden text-xs text-muted-foreground lg:inline">
+            Schritt {step} von {totalSteps} · {STEP_LABELS[step - 1]}
+          </span>
+          <ThemeToggle />
+        </div>
       </header>
 
       {/* Progress (mobile) */}

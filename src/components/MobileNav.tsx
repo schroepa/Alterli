@@ -11,7 +11,7 @@ import {
 
 const LINKS = [
   { href: '#features', label: 'Features' },
-  { href: '#app', label: 'App' },
+  { href: '/app', label: 'App' },
 ] as const;
 
 export function MobileNav() {
@@ -46,7 +46,7 @@ export function MobileNav() {
           ))}
           <SheetClose asChild>
             <a
-              href="#app"
+              href="/app"
               className="mt-4 inline-flex items-center justify-center gap-1.5 rounded-md bg-primary px-4 py-2.5 text-sm font-medium text-primary-foreground hover:bg-primary/90"
             >
               App starten
