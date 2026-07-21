@@ -95,10 +95,16 @@ export function RiesterEntscheidung({ result }: Props) {
       </div>
 
       {empfohlen && (
-        <Alert className="border-primary/30 bg-primary/5">
+        <Alert className="border-primary/30 bg-primary/5 [grid-template-columns:auto_1fr] [&>svg]:row-start-1">
           <CheckCircle2 aria-hidden="true" />
-          <AlertTitle className="text-sm">Für dich nahe liegend: {empfohlen.label}</AlertTitle>
-          <AlertDescription>{empfohlen.text}</AlertDescription>
+          <div className="col-start-2 flex min-w-0 flex-col gap-1.5">
+            <AlertTitle className="col-auto text-sm leading-snug">
+              Für dich nahe liegend: {empfohlen.label}
+            </AlertTitle>
+            <AlertDescription className="col-auto text-xs leading-relaxed">
+              {empfohlen.text}
+            </AlertDescription>
+          </div>
         </Alert>
       )}
 
