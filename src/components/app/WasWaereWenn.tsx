@@ -2,6 +2,7 @@ import { useMemo, useState } from 'react';
 import { Baby, Heart, Wallet, Clock, RotateCcw } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { Checkbox } from '@/components/ui/checkbox';
 import { calc } from '@/lib/calc';
 import { fmtEur, cn } from '@/lib/utils';
 import type { CalcParams, CalcResult } from '@/lib/types';
@@ -80,11 +81,11 @@ export function WasWaereWenn({ params, baseResult }: Props) {
     }
   }, [scenarioParams, active.size]);
 
-  const toggle = (id: SzenarioId) => {
+  const setOn = (id: SzenarioId, on: boolean) => {
     setActive((prev) => {
       const next = new Set(prev);
-      if (next.has(id)) next.delete(id);
-      else next.add(id);
+      if (on) next.add(id);
+      else next.delete(id);
       return next;
     });
   };
@@ -111,7 +112,7 @@ export function WasWaereWenn({ params, baseResult }: Props) {
           <p className="text-sm text-muted-foreground leading-relaxed">
             Schalte Lebensereignisse um und sieh, wie sich{' '}
             <GlossarTerm term="versorgungsluecke">Lücke</GlossarTerm>, Einkommen und Zulage ändern —
-            alles lokal, ohne Speicherung.
+            alles lokal, ohne Speicherung. Mehrfachauswahl möglich.
           </p>
         </div>
         {active.size > 0 && (
@@ -122,32 +123,38 @@ export function WasWaereWenn({ params, baseResult }: Props) {
         )}
       </div>
 
-      <div className="flex flex-wrap gap-2" role="group" aria-label="Szenarien wählen">
+      <div className="grid gap-2" role="group" aria-label="Szenarien wählen">
         {SZENARIEN.map((s) => {
           const on = active.has(s.id);
           const avail = s.available(params);
+          const disabled = !avail && !on;
           const Icon = s.icon;
+          const id = `szenario-${s.id}`;
           return (
-            <Button
+            <label
               key={s.id}
-              type="button"
-              variant="outline"
-              size="sm"
-              disabled={!avail && !on}
-              aria-pressed={on}
-              onClick={() => toggle(s.id)}
+              htmlFor={id}
               className={cn(
-                'h-auto flex flex-col items-start gap-0.5 px-3 py-2',
-                on &&
-                  'border-primary bg-primary/10 hover:bg-primary/15 text-foreground',
+                'flex cursor-pointer items-start gap-3 rounded-lg border border-border bg-background px-3 py-2.5 transition-colors',
+                'hover:bg-accent/40 has-[[data-state=checked]]:border-primary has-[[data-state=checked]]:bg-primary/5',
+                disabled && 'cursor-not-allowed opacity-50',
               )}
             >
-              <span className="flex items-center gap-1.5 text-sm font-medium">
-                <Icon size={14} aria-hidden="true" />
-                {s.label}
+              <Checkbox
+                id={id}
+                checked={on}
+                disabled={disabled}
+                onCheckedChange={(checked) => setOn(s.id, checked === true)}
+                className="mt-0.5"
+              />
+              <span className="min-w-0 flex-1">
+                <span className="flex items-center gap-1.5 text-sm font-medium text-foreground">
+                  <Icon size={14} aria-hidden="true" />
+                  {s.label}
+                </span>
+                <span className="mt-0.5 block text-[11px] text-muted-foreground">{s.hint}</span>
               </span>
-              <span className="text-[10px] font-normal text-muted-foreground">{s.hint}</span>
-            </Button>
+            </label>
           );
         })}
       </div>
@@ -158,9 +165,9 @@ export function WasWaereWenn({ params, baseResult }: Props) {
           aria-live="polite"
         >
           <div className="flex flex-wrap gap-2">
-            {[...active].map((id) => (
-              <Badge key={id} variant="secondary" className="text-[10px]">
-                {SZENARIEN.find((s) => s.id === id)?.label}
+            {[...active].map((sid) => (
+              <Badge key={sid} variant="secondary" className="text-[10px]">
+                {SZENARIEN.find((s) => s.id === sid)?.label}
               </Badge>
             ))}
           </div>
