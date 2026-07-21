@@ -73,7 +73,7 @@ alterli erstellt vereinfachte Schätzungen ohne Gewähr.
 Das Tool ersetzt keine individuelle Beratung durch zugelassene Finanz- oder Steuerberater.
 Keine Anlageberatung im Sinne des WpHG.
 
-Stand der Berechnungsgrundlagen: April 2026.
+Stand der Berechnungsgrundlagen: Build-Datum der jeweiligen Deployment-Version.
 
 ---
 
