@@ -11,6 +11,7 @@ import { Separator } from '@/components/ui/separator';
 import { fmtEur } from '@/lib/utils';
 import type { CalcResult, CalcParams, EmpfTyp } from '@/lib/types';
 import { EinkommensSchichten } from './EinkommensSchichten';
+import { RiesterEntscheidung } from './RiesterEntscheidung';
 
 interface Props {
   result: CalcResult;
@@ -245,6 +246,14 @@ export function StepErgebnis({ result, params, onReset }: Props) {
           </figure>
         </TabsContent>
       </Tabs>
+
+      {/* Riester-Entscheidungshilfe */}
+      {result.hatRiester && (
+        <>
+          <Separator />
+          <RiesterEntscheidung result={result} />
+        </>
+      )}
 
       <Separator />
 
