@@ -1,4 +1,11 @@
 ---
+const buildDate = new Date();
+const standLabel = buildDate.toLocaleDateString('de-DE', {
+  day: 'numeric',
+  month: 'long',
+  year: 'numeric',
+});
+const year = buildDate.getFullYear();
 ---
 <footer class="border-t border-border py-10 px-6">
   <div class="container max-w-6xl mx-auto">
@@ -18,7 +25,7 @@
 
       <div class="text-[11px] text-muted-foreground leading-relaxed max-w-sm">
         Alle Berechnungen sind vereinfachte Schätzungen ohne Gewähr. Kein Ersatz für individuelle
-        Finanz- oder Steuerberatung. Stand: April 2026.
+        Finanz- oder Steuerberatung. Stand: {standLabel}.
       </div>
 
       <ul role="list" class="flex flex-col gap-1.5 text-[11px] text-muted-foreground">
@@ -36,7 +43,7 @@
     </div>
 
     <div class="mt-8 pt-6 border-t border-border flex items-center justify-between flex-wrap gap-3">
-      <span class="text-[10px] text-muted-foreground/50">© 2026 DigiPub · alterli v1 Alpha</span>
+      <span class="text-[10px] text-muted-foreground/50">© {year} DigiPub · alterli v1 Alpha</span>
       <span class="text-[10px] text-muted-foreground/50">Keine Anlageberatung im Sinne des WpHG</span>
     </div>
   </div>
