@@ -110,11 +110,14 @@ export function StepErgebnis({ result, params, onReset }: Props) {
         <p className="text-sm leading-relaxed text-foreground">{result.ehrlichText}</p>
       </div>
 
-      {/* Schichtenmodell — zentrale Klarheit */}
-      <EinkommensSchichten result={result} params={params} />
+      {/* Schichten + KPIs: Desktop Side-by-Side */}
+      <div className="grid gap-6 lg:grid-cols-5 lg:gap-8">
+        <div className="lg:col-span-3">
+          <EinkommensSchichten result={result} params={params} />
+        </div>
 
       {/* KPIs */}
-      <div className="grid grid-cols-2 sm:grid-cols-3 gap-px bg-border rounded-lg overflow-hidden" role="list" aria-label="Wichtigste Kennzahlen">
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-1 lg:col-span-2 gap-px bg-border rounded-lg overflow-hidden self-start" role="list" aria-label="Wichtigste Kennzahlen">
         <div role="listitem" className="bg-card p-4">
           <p className="text-[10px] text-muted-foreground uppercase tracking-widest mb-1">Alterseinkommen / Mo.</p>
           <p className="text-xl font-semibold tabular-nums">{fmtEur(result.gesamtRente)}</p>
@@ -126,11 +129,12 @@ export function StepErgebnis({ result, params, onReset }: Props) {
             {result.luecke > 0 ? `−${fmtEur(result.luecke)}` : 'Keine Lücke'}
           </p>
         </div>
-        <div role="listitem" className="bg-card p-4 col-span-2 sm:col-span-1">
+        <div role="listitem" className="bg-card p-4 col-span-2 sm:col-span-1 lg:col-span-1">
           <p className="text-[10px] text-muted-foreground uppercase tracking-widest mb-1">{basisLabel} / Mo.</p>
           <p className="text-xl font-semibold tabular-nums">{fmtEur(basisWert)}</p>
           <p className="text-[10px] text-muted-foreground mt-1">Dein Fundament</p>
         </div>
+      </div>
       </div>
 
       <Separator />

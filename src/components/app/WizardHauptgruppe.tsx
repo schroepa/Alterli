@@ -1,5 +1,6 @@
 import { useRef } from 'react';
 import { Briefcase, Building2, Wrench, Scale } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { HAUPTGRUPPEN } from '@/lib/groups';
 import type { CalcParams, Hauptgruppe } from '@/lib/types';
@@ -45,19 +46,19 @@ export function WizardHauptgruppe({ params, onChange, onAutoAdvance }: Props) {
           const Icon = ICONS[iconName];
           const selected = params.hauptgruppe === id;
           return (
-            <button
+            <Button
               key={id}
               type="button"
+              variant="outline"
               role="radio"
               aria-checked={selected}
               onClick={() => handleSelect(id)}
               className={cn(
-                'flex flex-col gap-3 p-4 min-h-[80px] rounded-lg border text-left',
-                'transition-all duration-150 focus-visible:outline-none focus-visible:ring-2',
-                'focus-visible:ring-[var(--gold)] focus-visible:ring-offset-2',
+                'h-auto flex flex-col items-start gap-3 p-4 min-h-[80px] text-left whitespace-normal',
+                'focus-visible:ring-[var(--gold)]',
                 selected
-                  ? 'border-[var(--gold)] bg-[var(--gold-dim)]'
-                  : 'border-border bg-transparent hover:border-foreground/20',
+                  ? 'border-[var(--gold)] bg-[var(--gold-dim)] hover:bg-[var(--gold-dim)]'
+                  : 'hover:border-foreground/20',
               )}
             >
               <Icon
@@ -67,9 +68,9 @@ export function WizardHauptgruppe({ params, onChange, onAutoAdvance }: Props) {
               />
               <div>
                 <div className="text-sm font-medium text-foreground">{label}</div>
-                <div className="text-xs text-muted-foreground mt-0.5">{sub}</div>
+                <div className="text-xs text-muted-foreground mt-0.5 font-normal">{sub}</div>
               </div>
-            </button>
+            </Button>
           );
         })}
       </div>

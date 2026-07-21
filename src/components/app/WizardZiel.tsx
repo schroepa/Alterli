@@ -1,14 +1,15 @@
 import { Slider } from '@/components/ui/slider';
 import { Label } from '@/components/ui/label';
-import { cn, fmtEur } from '@/lib/utils';
+import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
+import { fmtEur } from '@/lib/utils';
 import type { CalcParams } from '@/lib/types';
 
 const FRUEHRENTE_OPTIONS = [
-  { value: 0,  label: 'Mit 67' },
-  { value: 65, label: 'Mit 65' },
-  { value: 63, label: 'Mit 63' },
-  { value: 62, label: 'Mit 62' },
-  { value: 60, label: 'Mit 60' },
+  { value: '0',  label: 'Mit 67' },
+  { value: '65', label: 'Mit 65' },
+  { value: '63', label: 'Mit 63' },
+  { value: '62', label: 'Mit 62' },
+  { value: '60', label: 'Mit 60' },
 ] as const;
 
 interface Props {
@@ -33,12 +34,11 @@ export function WizardZiel({ params, onChange }: Props) {
         </h2>
         <p className="text-sm text-muted-foreground leading-relaxed">
           Das ist dein persönlicher Maßstab. Wir zeigen dir ehrlich wie weit du
-          davon entfernt bist.
+          davon entfernt bist — auf Basis von gesetzlicher Rente plus privater Vorsorge.
         </p>
       </div>
 
       <div className="space-y-8">
-        {/* Wunschrente slider */}
         <div className="space-y-4">
           <div className="text-center">
             <span
@@ -72,36 +72,29 @@ export function WizardZiel({ params, onChange }: Props) {
 
         <div className="border-t border-border" />
 
-        {/* Frühpension */}
         <div className="space-y-3">
           <Label className="text-sm text-foreground">Frühpension geplant?</Label>
-          <div
-            role="radiogroup"
+          <ToggleGroup
+            type="single"
+            value={String(params.fruehRente)}
+            onValueChange={(v) => {
+              if (v !== '') onChange({ fruehRente: Number(v) });
+            }}
+            variant="outline"
+            spacing={2}
+            className="flex flex-wrap justify-start"
             aria-label="Rentenalter wählen"
-            className="flex flex-wrap gap-2"
           >
-            {FRUEHRENTE_OPTIONS.map(({ value, label }) => {
-              const selected = params.fruehRente === value;
-              return (
-                <button
-                  key={value}
-                  type="button"
-                  role="radio"
-                  aria-checked={selected}
-                  onClick={() => onChange({ fruehRente: value })}
-                  className={cn(
-                    'px-3 py-1.5 rounded-md border text-sm transition-all',
-                    'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--gold)] focus-visible:ring-offset-1',
-                    selected
-                      ? 'border-[var(--gold)] bg-[var(--gold-dim)] text-[var(--gold)]'
-                      : 'border-border text-muted-foreground hover:border-foreground/20',
-                  )}
-                >
-                  {label}
-                </button>
-              );
-            })}
-          </div>
+            {FRUEHRENTE_OPTIONS.map(({ value, label }) => (
+              <ToggleGroupItem
+                key={value}
+                value={value}
+                className="px-3 data-[state=on]:border-[var(--gold)] data-[state=on]:bg-[var(--gold-dim)] data-[state=on]:text-[var(--gold)]"
+              >
+                {label}
+              </ToggleGroupItem>
+            ))}
+          </ToggleGroup>
 
           {abzug && (
             <p className="text-xs text-amber-600 dark:text-amber-400">
@@ -112,7 +105,6 @@ export function WizardZiel({ params, onChange }: Props) {
 
         <div className="border-t border-border" />
 
-        {/* Lebensereignisse */}
         <div className="space-y-3">
           <Label className="text-sm text-muted-foreground">Planst du etwas Größeres? (optional)</Label>
           <p className="text-xs text-muted-foreground">

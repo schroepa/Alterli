@@ -118,7 +118,7 @@ export default function AlterliApp() {
 
   if (screen === 'result' && result) {
     return (
-      <div className="px-6 py-8 max-w-2xl mx-auto">
+      <div className="px-4 sm:px-6 py-8 max-w-lg md:max-w-2xl lg:max-w-4xl xl:max-w-5xl mx-auto">
         <StepErgebnis result={result} params={params} onReset={handleReset} />
       </div>
     );

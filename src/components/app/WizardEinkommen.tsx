@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import type { CalcParams } from '@/lib/types';
 
@@ -65,8 +66,10 @@ export function WizardEinkommen({ params, onChange }: Props) {
 
         <div className="space-y-3">
           <div className="flex items-center gap-3">
-            <button
+            <Button
               type="button"
+              variant="outline"
+              size="sm"
               role="checkbox"
               aria-checked={showNeben}
               onClick={() => {
@@ -78,14 +81,12 @@ export function WizardEinkommen({ params, onChange }: Props) {
                 }
               }}
               className={cn(
-                'text-sm px-3 py-1 rounded-md border transition-colors',
-                showNeben
-                  ? 'border-[var(--gold)] bg-[var(--gold-dim)] text-[var(--gold)]'
-                  : 'border-border text-muted-foreground hover:border-foreground/30',
+                showNeben &&
+                  'border-[var(--gold)] bg-[var(--gold-dim)] text-[var(--gold)] hover:bg-[var(--gold-dim)] hover:text-[var(--gold)]',
               )}
             >
               {showNeben ? 'Nebeneinkommen: ja' : 'Hast du Nebeneinkommen?'}
-            </button>
+            </Button>
           </div>
 
           <div className={cn('field-expand', showNeben && 'open')}>

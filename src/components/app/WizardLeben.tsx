@@ -2,6 +2,7 @@ import { Minus, Plus } from 'lucide-react';
 import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import type { CalcParams } from '@/lib/types';
 
@@ -15,15 +16,17 @@ function Stepper({
 }: { value: number; min?: number; max?: number; onChange: (v: number) => void; label: string }) {
   return (
     <div className="flex items-center gap-3" role="group" aria-label={label}>
-      <button
+      <Button
         type="button"
+        variant="outline"
+        size="icon"
         onClick={() => onChange(Math.max(min, value - 1))}
         disabled={value <= min}
         aria-label={`${label} verringern`}
-        className="flex items-center justify-center w-9 h-9 rounded-md border border-border text-muted-foreground hover:border-foreground/30 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+        className="size-9"
       >
         <Minus size={14} aria-hidden="true" />
-      </button>
+      </Button>
       <span
         className="text-sm font-medium tabular-nums min-w-[2ch] text-center"
         style={{ color: 'var(--gold)' }}
@@ -32,15 +35,17 @@ function Stepper({
       >
         {value}
       </span>
-      <button
+      <Button
         type="button"
+        variant="outline"
+        size="icon"
         onClick={() => onChange(Math.min(max, value + 1))}
         disabled={value >= max}
         aria-label={`${label} erhöhen`}
-        className="flex items-center justify-center w-9 h-9 rounded-md border border-border text-muted-foreground hover:border-foreground/30 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+        className="size-9"
       >
         <Plus size={14} aria-hidden="true" />
-      </button>
+      </Button>
     </div>
   );
 }

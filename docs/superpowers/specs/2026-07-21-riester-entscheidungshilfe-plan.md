@@ -18,7 +18,7 @@
 |-------|--------|
 | 1 — Schichtenmodell / Copy | ✅ |
 | 2 — Entscheidungshilfe A–D | ✅ |
-| 3 — Responsive + shadcn | offen |
+| 3 — Responsive + shadcn | ✅ (Wizard-Sidebar, Ergebnis-Grid, Mobile-Nav, Button/ToggleGroup) |
 | 4 — Was-wäre-wenn & P1 | offen |
 
 ---
