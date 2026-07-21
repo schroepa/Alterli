@@ -117,7 +117,7 @@ export function StepErgebnis({ result, params, onReset }: Props) {
         <div className="mx-auto flex w-full max-w-6xl flex-wrap items-center justify-between gap-3">
           <div className="min-w-0">
             <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
-              <a href="/" className="mr-1 text-sm font-semibold tracking-tight hover:text-primary lg:hidden" aria-label="Zur Startseite">
+              <a href="/" className="mr-1 text-sm font-semibold tracking-tight hover:text-primary md:hidden" aria-label="Zur Startseite">
                 alter<span className="text-primary">li</span>
               </a>
               <h2 className="text-base font-semibold tracking-tight sm:text-lg">Dein Alterseinkommen</h2>
@@ -156,7 +156,7 @@ export function StepErgebnis({ result, params, onReset }: Props) {
       <div className="mx-auto flex min-h-0 w-full max-w-6xl flex-1 overflow-hidden">
         {/* Desktop sidebar nav */}
         <aside
-          className="hidden w-60 shrink-0 flex-col border-r border-border bg-muted/20 lg:flex xl:w-64"
+          className="hidden w-52 shrink-0 flex-col border-r border-border bg-muted/20 md:flex lg:w-60 xl:w-64"
           aria-label="Analyse-Bereiche"
         >
           <p className="px-4 pt-5 pb-2 text-[10px] font-medium uppercase tracking-widest text-muted-foreground">
@@ -205,7 +205,7 @@ export function StepErgebnis({ result, params, onReset }: Props) {
 
         <div className="flex min-h-0 min-w-0 flex-1 flex-col">
           {/* Mobile / tablet: horizontal chip nav */}
-          <div className="shrink-0 border-b border-border px-3 py-2 lg:hidden">
+          <div className="shrink-0 border-b border-border px-3 py-2 md:hidden">
             <nav
               className="flex gap-1.5 overflow-x-auto pb-0.5 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
               aria-label="Analyse-Bereiche"
