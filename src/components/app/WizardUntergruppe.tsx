@@ -1,4 +1,5 @@
 import { useRef } from 'react';
+import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { UNTERGRUPPEN, UNTERGRUPPE_CONTEXT } from '@/lib/groups';
 import type { CalcParams, Hauptgruppe } from '@/lib/types';
@@ -61,24 +62,24 @@ export function WizardUntergruppe({ params, onChange, onSoftExit, onAutoAdvance 
         {options.map(({ id, label, hint, softExit }) => {
           const selected = params.untergruppe === id;
           return (
-            <button
+            <Button
               key={id}
               type="button"
+              variant="outline"
               role="radio"
               aria-checked={selected}
               onClick={() => handleSelect(id, !!softExit)}
               className={cn(
-                'flex flex-col gap-1 px-4 py-3 rounded-lg border text-left w-full',
-                'transition-all duration-150 focus-visible:outline-none focus-visible:ring-2',
-                'focus-visible:ring-[var(--gold)] focus-visible:ring-offset-2',
+                'h-auto flex flex-col items-start gap-1 px-4 py-3 text-left whitespace-normal w-full',
+                'focus-visible:ring-[var(--gold)]',
                 selected
-                  ? 'border-[var(--gold)] bg-[var(--gold-dim)]'
-                  : 'border-border bg-transparent hover:border-foreground/20',
+                  ? 'border-[var(--gold)] bg-[var(--gold-dim)] hover:bg-[var(--gold-dim)]'
+                  : 'hover:border-foreground/20',
               )}
             >
               <span className="text-sm font-medium text-foreground">{label}</span>
-              <span className="text-xs text-muted-foreground">{hint}</span>
-            </button>
+              <span className="text-xs text-muted-foreground font-normal">{hint}</span>
+            </Button>
           );
         })}
       </div>
