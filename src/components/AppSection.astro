@@ -1,17 +1,14 @@
 ---
 ---
-<section id="app" class="border-t border-border">
-  <div class="container max-w-6xl mx-auto px-6 py-12">
-    <div class="text-center mb-8">
-      <p class="text-[10px] text-muted-foreground font-sans tracking-[5px] uppercase mb-3">Die App</p>
-      <h2 class="font-display text-3xl text-foreground">
-        Deine Analyse. <em class="text-gold">Jetzt.</em>
-      </h2>
-    </div>
-  </div>
-
-  <!-- Full-width app container -->
-  <div id="alterli-app" class="w-full border-t border-border min-h-[85vh]">
+<!--
+  Vollständige App-Shell unter der sticky Nav (h-14 = 3.5rem).
+  Footer/Weiter bleibt im Viewport — kein Scrollen in der Landing Page nötig.
+-->
+<section id="app" class="border-t border-border scroll-mt-14">
+  <div
+    id="alterli-app"
+    class="h-[calc(100dvh-3.5rem)] w-full overflow-hidden bg-background"
+  >
     <slot />
   </div>
 </section>

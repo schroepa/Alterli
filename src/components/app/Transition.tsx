@@ -12,7 +12,7 @@ export function Transition({ onDone }: Props) {
 
   return (
     <div
-      className="flex flex-col items-center justify-center min-h-screen bg-background gap-6 px-6"
+      className="flex h-full min-h-0 flex-col items-center justify-center bg-background gap-6 px-6"
       role="status"
       aria-live="polite"
       aria-label="Analyse wird berechnet"

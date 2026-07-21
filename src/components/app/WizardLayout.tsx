@@ -4,16 +4,13 @@ import { cn } from '@/lib/utils';
 import type { ReactNode } from 'react';
 
 interface WizardLayoutProps {
-  /** 1-based step number shown in header ("2 / 7") */
   step: number;
   totalSteps: number;
-  /** React key forwarded to the animation wrapper — change it to trigger slide */
   stepKey: number;
   slideDir: 'forward' | 'back' | null;
   onBack?: () => void;
   onNext: () => void;
   nextDisabled?: boolean;
-  /** Override "Weiter" label (e.g. "Analyse starten") */
   nextLabel?: string;
   children: ReactNode;
 }
@@ -42,29 +39,29 @@ export function WizardLayout({
   const pct = Math.round((step / totalSteps) * 100);
 
   return (
-    <div className="flex flex-col min-h-screen bg-background lg:min-h-[min(100vh,900px)]">
-      {/* ── Header ──────────────────────────────────────────────── */}
-      <header className="flex items-center justify-between px-4 sm:px-6 py-4 shrink-0 lg:border-b lg:border-border">
+    <div className="flex h-full min-h-0 w-full flex-col bg-background">
+      {/* Header */}
+      <header className="flex shrink-0 items-center justify-between border-b border-border px-4 py-3 sm:px-6">
         <span className="text-sm font-semibold tracking-tight">alterli</span>
         <span
-          className="text-xs text-muted-foreground tabular-nums lg:hidden"
+          className="text-xs tabular-nums text-muted-foreground lg:hidden"
           aria-label={`Schritt ${step} von ${totalSteps}`}
         >
           {step} / {totalSteps}
         </span>
-        <span className="hidden lg:inline text-xs text-muted-foreground">
+        <span className="hidden text-xs text-muted-foreground lg:inline">
           Schritt {step} von {totalSteps} · {STEP_LABELS[step - 1]}
         </span>
       </header>
 
-      {/* ── Progress bar (mobile/tablet) ────────────────────────── */}
+      {/* Progress (mobile) */}
       <div
         role="progressbar"
         aria-valuenow={step}
         aria-valuemin={0}
         aria-valuemax={totalSteps}
         aria-label={`Fortschritt: Schritt ${step} von ${totalSteps}`}
-        className="h-1 bg-muted shrink-0 lg:hidden"
+        className="h-1 shrink-0 bg-muted lg:hidden"
       >
         <div
           className="h-full transition-all duration-300 ease-out"
@@ -72,14 +69,13 @@ export function WizardLayout({
         />
       </div>
 
-      {/* ── Body: sidebar (desktop) + content ───────────────────── */}
-      <div className="flex-1 flex overflow-hidden">
-        {/* Desktop step rail */}
+      {/* Body */}
+      <div className="flex min-h-0 flex-1 overflow-hidden">
         <aside
-          className="hidden lg:flex w-56 xl:w-64 shrink-0 flex-col gap-1 border-r border-border px-4 py-8"
+          className="hidden w-52 shrink-0 flex-col gap-1 overflow-y-auto border-r border-border px-3 py-6 xl:w-56 lg:flex"
           aria-label="Wizard-Fortschritt"
         >
-          <ol className="space-y-1">
+          <ol className="space-y-0.5">
             {STEP_LABELS.map((label, i) => {
               const n = i + 1;
               const done = n < step;
@@ -88,16 +84,16 @@ export function WizardLayout({
                 <li key={label}>
                   <div
                     className={cn(
-                      'flex items-center gap-3 rounded-md px-3 py-2 text-sm',
-                      current && 'bg-primary/10 text-foreground font-medium',
+                      'flex items-center gap-2.5 rounded-md px-2.5 py-2 text-sm',
+                      current && 'bg-primary/10 font-medium text-foreground',
                       done && 'text-muted-foreground',
-                      !done && !current && 'text-muted-foreground/60',
+                      !done && !current && 'text-muted-foreground/55',
                     )}
                     aria-current={current ? 'step' : undefined}
                   >
                     <span
                       className={cn(
-                        'flex size-6 items-center justify-center rounded-full text-[11px] tabular-nums shrink-0',
+                        'flex size-6 shrink-0 items-center justify-center rounded-full text-[11px] tabular-nums',
                         current && 'bg-primary text-primary-foreground',
                         done && 'bg-primary/20 text-primary',
                         !done && !current && 'bg-muted text-muted-foreground',
@@ -113,13 +109,11 @@ export function WizardLayout({
           </ol>
         </aside>
 
-        {/* Content */}
-        <div className="flex-1 overflow-y-auto">
+        <div className="min-h-0 min-w-0 flex-1 overflow-y-auto">
           <div
             key={stepKey}
             className={cn(
-              'px-4 sm:px-6 py-8 sm:py-10 mx-auto w-full',
-              'max-w-lg md:max-w-xl lg:max-w-2xl lg:py-12',
+              'mx-auto w-full max-w-lg px-4 py-6 sm:max-w-xl sm:px-6 sm:py-8 lg:max-w-2xl lg:py-10',
               slideDir === 'forward' && 'wizard-slide-forward',
               slideDir === 'back' && 'wizard-slide-back',
             )}
@@ -129,9 +123,9 @@ export function WizardLayout({
         </div>
       </div>
 
-      {/* ── Bottom nav ──────────────────────────────────────────── */}
-      <footer className="shrink-0 border-t border-border bg-background px-4 sm:px-6 py-4 flex items-center justify-between gap-4 lg:pl-[calc(14rem+1.5rem)] xl:pl-[calc(16rem+1.5rem)]">
-        <div>
+      {/* Footer — immer sichtbar am unteren Rand der App-Shell */}
+      <footer className="z-10 flex shrink-0 items-center justify-between gap-4 border-t border-border bg-background px-4 py-3 sm:px-6 safe-pb">
+        <div className="min-w-[5rem]">
           {onBack ? (
             <Button
               variant="ghost"
@@ -142,18 +136,15 @@ export function WizardLayout({
               Zurück
             </Button>
           ) : (
-            <span />
+            <span className="text-[10px] text-muted-foreground select-none hidden sm:inline">
+              Keine Datenspeicherung
+            </span>
           )}
         </div>
-        <div className="flex flex-col items-end gap-1">
-          <Button onClick={onNext} disabled={nextDisabled}>
-            {nextLabel ?? 'Weiter'}
-            <ChevronRight size={16} aria-hidden="true" />
-          </Button>
-          <p className="text-[10px] text-muted-foreground select-none">
-            Keine Datenspeicherung · Kostenlos
-          </p>
-        </div>
+        <Button onClick={onNext} disabled={nextDisabled} size="lg" className="min-w-[8.5rem]">
+          {nextLabel ?? 'Weiter'}
+          <ChevronRight size={16} aria-hidden="true" />
+        </Button>
       </footer>
     </div>
   );
