@@ -1,4 +1,7 @@
 import { Slider } from '@/components/ui/slider';
+import { Label } from '@/components/ui/label';
+import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
+import { GlossarTerm } from './GlossarTerm';
 import type { CalcParams } from '@/lib/types';
 
 interface Props {
@@ -60,6 +63,45 @@ export function WizardAlter({ params, onChange }: Props) {
           </span>
           <span>66</span>
         </div>
+      </div>
+
+      <div className="space-y-3 border-t border-border pt-8">
+        <Label className="text-sm text-foreground">
+          Geschlecht{' '}
+          <span className="text-muted-foreground font-normal">(für Lebenserwartung)</span>
+        </Label>
+        <p className="text-xs text-muted-foreground leading-relaxed">
+          Beeinflusst nur die geschätzte Rentenbezugsdauer — keine anderen Annahmen.
+        </p>
+        <ToggleGroup
+          type="single"
+          value={params.geschlecht}
+          onValueChange={(v) => {
+            if (v === 'w' || v === 'm') onChange({ geschlecht: v });
+          }}
+          variant="outline"
+          spacing={2}
+          className="justify-start"
+          aria-label="Geschlecht wählen"
+        >
+          <ToggleGroupItem
+            value="w"
+            className="px-4 data-[state=on]:border-[var(--gold)] data-[state=on]:bg-[var(--gold-dim)] data-[state=on]:text-[var(--gold)]"
+          >
+            Weiblich
+          </ToggleGroupItem>
+          <ToggleGroupItem
+            value="m"
+            className="px-4 data-[state=on]:border-[var(--gold)] data-[state=on]:bg-[var(--gold-dim)] data-[state=on]:text-[var(--gold)]"
+          >
+            Männlich
+          </ToggleGroupItem>
+        </ToggleGroup>
+        <p className="text-[11px] text-muted-foreground">
+          Statistische{' '}
+          <GlossarTerm term="basisrente">Basisrente</GlossarTerm>
+          {' '}bleibt unabhängig davon gleich modelliert.
+        </p>
       </div>
     </div>
   );

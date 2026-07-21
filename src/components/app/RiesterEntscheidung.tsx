@@ -5,6 +5,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { fmtEur, cn } from '@/lib/utils';
 import type { CalcResult } from '@/lib/types';
 import { calcRiesterSzenarien, type RiesterSzenario } from '@/lib/riesterSzenarien';
+import { GlossarTerm } from './GlossarTerm';
 
 interface Props {
   result: CalcResult;
@@ -84,6 +85,12 @@ export function RiesterEntscheidung({ result }: Props) {
         <p className="text-sm text-muted-foreground leading-relaxed">
           Vergleich der realistischen Optionen. Riester bleibt in allen Fällen eine Aufstockung
           zur gesetzlichen Rente bzw. Pension — außer du kündigst und verlierst die private Säule.
+          {' '}
+          <GlossarTerm term="beitragsfrei">Beitragsfrei stellen</GlossarTerm>
+          {' · '}
+          <GlossarTerm term="depot2027">Depot 2027</GlossarTerm>
+          {' · '}
+          <GlossarTerm term="foerderverlust">Förderverlust</GlossarTerm>
         </p>
       </div>
 
