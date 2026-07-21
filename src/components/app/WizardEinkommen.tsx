@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
+import { Switch } from '@/components/ui/switch';
 import { cn } from '@/lib/utils';
 import type { CalcParams } from '@/lib/types';
 
@@ -29,6 +29,11 @@ export function WizardEinkommen({ params, onChange }: Props) {
   const handleNeben = (raw: string) => {
     const v = parseInt(raw.replace(/\D/g, ''), 10);
     onChange({ gewerbeMonat: isNaN(v) ? 0 : v });
+  };
+
+  const toggleNeben = (on: boolean) => {
+    setShowNeben(on);
+    if (!on) onChange({ gewerbeMonat: 0 });
   };
 
   return (
@@ -64,34 +69,28 @@ export function WizardEinkommen({ params, onChange }: Props) {
           </div>
         </div>
 
-        <div className="space-y-3">
-          <div className="flex items-center gap-3">
-            <Button
-              type="button"
-              variant="outline"
-              size="sm"
-              role="checkbox"
+        <div className="space-y-1 border-t border-border pt-6">
+          <div className="flex items-start justify-between gap-4">
+            <div className="space-y-0.5 min-w-0">
+              <Label htmlFor="hatNeben" className="text-sm text-foreground cursor-pointer">
+                Nebeneinkommen vorhanden
+              </Label>
+              <p className="text-xs text-muted-foreground leading-relaxed">
+                Einschalten, um einen zweiten Betrag anzugeben (Gewerbe, Freelance, Nebenjob).
+              </p>
+            </div>
+            <Switch
+              id="hatNeben"
+              checked={showNeben}
+              onCheckedChange={toggleNeben}
               aria-checked={showNeben}
-              onClick={() => {
-                if (showNeben) {
-                  setShowNeben(false);
-                  onChange({ gewerbeMonat: 0 });
-                } else {
-                  setShowNeben(true);
-                }
-              }}
-              className={cn(
-                showNeben &&
-                  'border-[var(--gold)] bg-[var(--gold-dim)] text-[var(--gold)] hover:bg-[var(--gold-dim)] hover:text-[var(--gold)]',
-              )}
-            >
-              {showNeben ? 'Nebeneinkommen: ja' : 'Hast du Nebeneinkommen?'}
-            </Button>
+              aria-controls="neben-felder"
+            />
           </div>
 
-          <div className={cn('field-expand', showNeben && 'open')}>
+          <div id="neben-felder" className={cn('field-expand', showNeben && 'open')}>
             <div>
-              <div className="space-y-2 pt-1">
+              <div className="space-y-2 pt-4">
                 <Label htmlFor="neben" className="text-sm text-muted-foreground">
                   {nebenLabel}
                 </Label>
