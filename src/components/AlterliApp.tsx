@@ -95,30 +95,38 @@ export default function AlterliApp() {
 
   if (screen === 'soft-exit') {
     return (
-      <SoftExit
-        selectedVW={params.untergruppe}
-        onBack={handleSoftExitBack}
-        onForce={handleSoftExitForce}
-      />
+      <div className="h-full w-full overflow-hidden">
+        <SoftExit
+          selectedVW={params.untergruppe}
+          onBack={handleSoftExitBack}
+          onForce={handleSoftExitForce}
+        />
+      </div>
     );
   }
 
   if (screen === 'transition') {
-    return <Transition onDone={handleTransitionDone} />;
+    return (
+      <div className="h-full w-full overflow-hidden">
+        <Transition onDone={handleTransitionDone} />
+      </div>
+    );
   }
 
   if (screen === 'ehrlicher-moment' && result) {
     return (
-      <EhrlicherMoment
-        result={result}
-        onContinue={handleEhrlicherMomentContinue}
-      />
+      <div className="h-full w-full overflow-hidden">
+        <EhrlicherMoment
+          result={result}
+          onContinue={handleEhrlicherMomentContinue}
+        />
+      </div>
     );
   }
 
   if (screen === 'result' && result) {
     return (
-      <div className="px-4 sm:px-6 py-8 max-w-lg md:max-w-2xl lg:max-w-4xl xl:max-w-5xl mx-auto">
+      <div className="h-full w-full overflow-hidden">
         <StepErgebnis result={result} params={params} onReset={handleReset} />
       </div>
     );
@@ -161,7 +169,7 @@ export default function AlterliApp() {
   })();
 
   return (
-    <>
+    <div className="h-full w-full overflow-hidden">
       <div role="status" aria-live="polite" aria-atomic="true" className="sr-only">
         Schritt {wizardStep + 1} von {TOTAL_STEPS}
       </div>
@@ -178,6 +186,6 @@ export default function AlterliApp() {
       >
         {wizardContent}
       </WizardLayout>
-    </>
+    </div>
   );
 }
