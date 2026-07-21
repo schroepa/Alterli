@@ -16,29 +16,53 @@ interface Props {
  */
 export function ChartFrame({ height = 240, className, children, remountKey }: Props) {
   const ref = useRef<HTMLDivElement>(null);
-  const [ready, setReady] = useState(false);
   const [width, setWidth] = useState(0);
 
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
 
+    let cancelled = false;
+    let tries = 0;
+
     const measure = () => {
-      const w = el.getBoundingClientRect().width;
+      if (cancelled) return;
+      const w = Math.floor(el.getBoundingClientRect().width);
       if (w > 0) {
-        setWidth(Math.floor(w));
-        setReady(true);
+        setWidth(w);
+        return true;
+      }
+      return false;
+    };
+
+    const retry = () => {
+      if (measure()) return;
+      tries += 1;
+      if (tries < 20) {
+        requestAnimationFrame(retry);
+      } else {
+        // Last resort: never stay on empty skeleton forever
+        const fallback = Math.floor(el.clientWidth) || el.parentElement?.clientWidth || 320;
+        if (fallback > 0) setWidth(fallback);
       }
     };
 
     measure();
-    const ro = new ResizeObserver(measure);
+    const ro = new ResizeObserver(() => {
+      measure();
+    });
     ro.observe(el);
-    // Tabs often lay out after first paint
-    const t = window.setTimeout(measure, 50);
+
+    const t0 = window.setTimeout(retry, 0);
+    const t1 = window.setTimeout(retry, 50);
+    const t2 = window.setTimeout(retry, 200);
+
     return () => {
+      cancelled = true;
       ro.disconnect();
-      window.clearTimeout(t);
+      window.clearTimeout(t0);
+      window.clearTimeout(t1);
+      window.clearTimeout(t2);
     };
   }, [remountKey]);
 
@@ -48,8 +72,8 @@ export function ChartFrame({ height = 240, className, children, remountKey }: Pr
       className={cn('w-full min-w-0', className)}
       style={{ height, maxWidth: '100%' }}
     >
-      {ready && width > 0 ? (
-        <ResponsiveContainer key={`${remountKey ?? 'chart'}-${width}`} width="100%" height="100%">
+      {width > 0 ? (
+        <ResponsiveContainer key={`${remountKey ?? 'chart'}-${width}`} width={width} height={height}>
           {children as React.ReactElement}
         </ResponsiveContainer>
       ) : (
