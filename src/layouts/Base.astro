@@ -31,7 +31,15 @@ const {
       })();
     </script>
   </head>
-  <body class="min-h-screen bg-background text-foreground antialiased">
-    <slot />
+  <body class="relative min-h-screen bg-background text-foreground antialiased">
+    <div class="page-atmosphere" aria-hidden="true">
+      <div class="page-atmosphere__glow page-atmosphere__glow--a"></div>
+      <div class="page-atmosphere__glow page-atmosphere__glow--b"></div>
+      <div class="page-atmosphere__glow page-atmosphere__glow--c"></div>
+      <div class="page-atmosphere__noise"></div>
+    </div>
+    <div class="relative z-10 min-h-screen">
+      <slot />
+    </div>
   </body>
 </html>

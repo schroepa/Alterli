@@ -12,7 +12,7 @@ export function SoftExit({ selectedVW, onBack, onForce }: Props) {
   const label = VW_LABELS[selectedVW] ?? 'diesem Berufsstand';
 
   return (
-    <div className="flex h-full min-h-0 flex-col overflow-y-auto bg-background px-6 py-8">
+    <div className="flex h-full min-h-0 flex-col overflow-y-auto bg-transparent px-6 py-8">
       <header className="mb-8">
         <a href="/" className="text-sm font-semibold tracking-tight hover:text-primary transition-colors" aria-label="alterli — zur Startseite">
           alter<span className="text-primary">li</span>
