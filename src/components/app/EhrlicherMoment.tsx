@@ -57,7 +57,7 @@ export function EhrlicherMoment({ result, onContinue }: Props) {
 
   return (
     <div
-      className="flex h-full min-h-0 flex-col items-center justify-center overflow-y-auto bg-background px-6 py-12 gap-10 animate-in fade-in duration-500"
+      className="flex h-full min-h-0 flex-col items-center justify-center overflow-y-auto bg-transparent px-6 py-12 gap-10 animate-in fade-in duration-500"
       role="main"
       aria-labelledby="ehrlicher-moment-heading"
     >

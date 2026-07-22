@@ -40,9 +40,9 @@ export function WizardLayout({
   const pct = Math.round((step / totalSteps) * 100);
 
   return (
-    <div className="flex h-full min-h-0 w-full flex-col bg-background">
+    <div className="flex h-full min-h-0 w-full flex-col bg-transparent">
       {/* Header */}
-      <header className="flex shrink-0 items-center justify-between border-b border-border px-4 py-3 sm:px-6">
+      <header className="flex shrink-0 items-center justify-between border-b border-border bg-background/70 px-4 py-3 backdrop-blur-sm sm:px-6">
         <a
           href="/"
           className="text-sm font-semibold tracking-tight text-foreground hover:text-primary transition-colors"
@@ -134,7 +134,7 @@ export function WizardLayout({
       </div>
 
       {/* Footer — immer sichtbar am unteren Rand der App-Shell */}
-      <footer className="z-10 flex shrink-0 items-center justify-between gap-4 border-t border-border bg-background px-4 py-3 sm:px-6 safe-pb">
+      <footer className="z-10 flex shrink-0 items-center justify-between gap-4 border-t border-border bg-background/80 px-4 py-3 backdrop-blur-sm sm:px-6 safe-pb">
         <div className="min-w-[5rem]">
           {onBack ? (
             <Button

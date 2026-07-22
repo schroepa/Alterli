@@ -110,9 +110,9 @@ export function StepErgebnis({ result, params, onReset }: Props) {
   ];
 
   return (
-    <div className="flex h-full min-h-0 w-full flex-col bg-background">
+    <div className="flex h-full min-h-0 w-full flex-col bg-transparent">
       {/* Sticky Summary */}
-      <header className="shrink-0 border-b border-border bg-background/95 px-4 py-3 backdrop-blur sm:px-6">
+      <header className="shrink-0 border-b border-border bg-background/80 px-4 py-3 backdrop-blur-sm sm:px-6">
         <div className="mx-auto flex w-full max-w-6xl flex-wrap items-center justify-between gap-3">
           <div className="min-w-0">
             <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
