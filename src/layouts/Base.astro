@@ -1,5 +1,6 @@
 ---
 import '../styles/globals.css';
+import AtmosphereGrain from '../components/AtmosphereGrain';
 
 interface Props {
   title?: string;
@@ -36,7 +37,7 @@ const {
       <div class="page-atmosphere__glow page-atmosphere__glow--a"></div>
       <div class="page-atmosphere__glow page-atmosphere__glow--b"></div>
       <div class="page-atmosphere__glow page-atmosphere__glow--c"></div>
-      <div class="page-atmosphere__noise"></div>
+      <AtmosphereGrain client:idle />
     </div>
     <div class="relative z-10 min-h-screen">
       <slot />
